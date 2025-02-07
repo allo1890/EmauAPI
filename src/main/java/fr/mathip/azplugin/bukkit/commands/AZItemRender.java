@@ -44,13 +44,20 @@ public class AZItemRender implements AZCommand {
                     nbti.mergeCompound(new NBTContainer("{PacRender:{Rarity:\"" + args[2] + "\"},PacDisplay:{Rarity:\"" + args[2] + "\"}}"));
                     p.sendMessage("§a[§2EmauRarity§a] §fRareté définie sur : " + args[2]);
                 } else {
+                    try {
+                        AZColor.get0xAARRGGBB(args[2]);
+                    } catch (IllegalArgumentException e) {
+                        p.sendMessage("§cErreur : La couleur Hexadécimale est invalide ! Exemple valide : #FF0000");
+                        return;
+                    }
+
                     nbti.mergeCompound(new NBTContainer("{PacRender: {Scale: " + Float.parseFloat(args[1]) + ", Color: " + AZColor.get0xAARRGGBB(args[2]) + "}, PacDisplay: {Color: " + AZColor.get0xAARRGGBB(args[2]) + "}}"));
                     p.sendMessage("§a[§2EmauSizeColor§a] §fTaille et couleur mises à jour !");
                 }
 
                 p.getItemInHand().setItemMeta(nbti.getItem().getItemMeta());
             } catch (NumberFormatException e) {
-                p.sendMessage("§cErreur : La valeur est invalide !");
+                p.sendMessage("§cErreur : La valeur de taille est invalide !");
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("itemrender")) {
             try {
@@ -63,7 +70,7 @@ public class AZItemRender implements AZCommand {
                     p.sendMessage("§a[§2EmauSize§a] §fTaille de l'item mise à jour !");
                 }
             } catch (NumberFormatException e) {
-                p.sendMessage("§cErreur : La valeur est invalide !");
+                p.sendMessage("§cErreur : La valeur de taille est invalide !");
             }
         } else {
             p.sendMessage("§c/az itemrender <taille> [couleur(Hex)]");

@@ -10,6 +10,9 @@ commands:
     permission-message: §cVous n'avez pas la permission d'utiliser cette commande !
 
 permissions:
+  azplugin.*:
+    description: Permet de mettre toutes les permission
+    default: op
   azplugin.command.size:
     description: Permission pour la commande principale
     default: op

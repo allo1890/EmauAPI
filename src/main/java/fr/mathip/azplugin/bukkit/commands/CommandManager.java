@@ -47,5 +47,4 @@ public class CommandManager implements CommandExecutor {
     public void addCommand(AZCommand azCommand) {
         commands.put(azCommand.getClass(), azCommand);
     }
-
 }

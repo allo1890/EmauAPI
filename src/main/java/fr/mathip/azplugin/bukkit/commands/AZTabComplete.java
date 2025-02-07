@@ -21,8 +21,12 @@ public class AZTabComplete implements TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
         if (s.equalsIgnoreCase("az") && commandSender.hasPermission("azplugin.*")) {
             if (args.length == 1) {
+                CommandManager commandManager = CommandManager.getInstance();
+                if (commandManager == null || commandManager.getCommands() == null) {
+                    return Collections.emptyList();
+                }
                 List<String> completion = new ArrayList<>();
-                for (AZCommand azCommand : CommandManager.getInstance().getCommands().values()) {
+                for (AZCommand azCommand : commandManager.getCommands().values()) {
                     if (azCommand.name().toLowerCase().startsWith(args[0].toLowerCase())) {
                         completion.add(azCommand.name());
                     }
@@ -36,34 +40,68 @@ public class AZTabComplete implements TabCompleter {
 
                 switch (args[0].toLowerCase()) {
                     case "model":
-                        for (PLSPPlayerModel plspPlayerModel : PLSPPlayerModel.values()) {
-                            if (plspPlayerModel.name().toLowerCase().startsWith(argLower)) {
+                        if (args.length == 2) {
+                            for (PLSPPlayerModel plspPlayerModel : PLSPPlayerModel.values()) {
                                 completion.add(plspPlayerModel.name());
+                            }
+                        } else if (args.length == 3) {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                completion.add(player.getName());
                             }
                         }
                         break;
 
                     case "worldenv":
-                        for (PLSPWorldEnv plspWorldEnv : PLSPWorldEnv.values()) {
-                            if (plspWorldEnv.name().toLowerCase().startsWith(argLower)) {
-                                completion.add(plspWorldEnv.name());
+                        if (args.length == 2) {
+                            completion.add("NETHER");
+                            completion.add("NORMAL");
+                            completion.add("THE_END");
+                        } else if (args.length == 3) {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                completion.add(player.getName());
                             }
                         }
                         break;
 
                     case "summon":
-                        for (EntityType entityType : EntityType.values()) {
-                            if (entityType.name().toLowerCase().startsWith(argLower)) {
-                                completion.add(entityType.name());
+                        if (EntityType.values() != null) {
+                            for (EntityType entityType : EntityType.values()) {
+                                if (entityType.name().toLowerCase().startsWith(argLower)) {
+                                    completion.add(entityType.name());
+                                }
                             }
                         }
                         break;
 
                     case "popup":
-                        for (PacketPopup popup : PopupConfig.getInstance().popups) {
-                            if (popup.getName().toLowerCase().startsWith(argLower)) {
-                                completion.add(popup.getName());
+                        if (args.length == 2) {
+                            PopupConfig popupConfig = PopupConfig.getInstance();
+                            if (popupConfig != null && popupConfig.popups != null) {
+                                for (PacketPopup popup : popupConfig.popups) {
+                                    if (popup != null && popup.getName().toLowerCase().startsWith(argLower)) {
+                                        completion.add(popup.getName());
+                                    }
+                                }
                             }
+                        } else if (args.length == 3) {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                if (player.getName().toLowerCase().startsWith(args[2].toLowerCase())) {
+                                    completion.add(player.getName());
+                                }
+                            }
+                        }
+                        break;
+
+                    case "seechunks":
+                        if (args.length == 2) {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                if (player.getName().toLowerCase().startsWith(argLower)) {
+                                    completion.add(player.getName());
+                                }
+                            }
+                        } else if (args.length == 3) {
+                            completion.add("on");
+                            completion.add("off");
                         }
                         break;
 
@@ -82,7 +120,8 @@ public class AZTabComplete implements TabCompleter {
                     case "itemrender":
                         if (args.length == 2) {
                             completion.add("rarity");
-                            completion.add("taille");
+                            completion.add("1");
+                            completion.add("1.5");
                         } else if (args.length == 3) {
                             if (args[1].equalsIgnoreCase("rarity")) {
                                 completion.add("AUTO");
@@ -94,6 +133,21 @@ public class AZTabComplete implements TabCompleter {
                                 completion.add("MYTHIC");
                             } else {
                                 completion.add("#FF0000");
+                                completion.add("#00FF08");
+                                completion.add("#00FFE4");
+                            }
+                        }
+                        break;
+                    case "size":
+                        if (args.length == 2) {
+                            completion.add("0.5");
+                            completion.add("1.0");
+                            completion.add("2.0");
+                        } else if (args.length == 3) {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                if (player.getName().toLowerCase().startsWith(args[2].toLowerCase())) {
+                                    completion.add(player.getName());
+                                }
                             }
                         }
                         break;
