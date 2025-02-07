@@ -22,16 +22,16 @@ public class CommandManager implements CommandExecutor {
         instance = this;
         if (s.equalsIgnoreCase("az")) {
             if (args.length == 0) {
-                commandSender.sendMessage("§a[AZPlugin]§e Liste des commandes:");
+                commandSender.sendMessage("§a[§2EmauPlugin§a]§f Liste des commandes:");
                 for (AZCommand azCommand : commands.values()) {
-                    commandSender.sendMessage("§a /az " + azCommand.name() + " :§e " + azCommand.description());
+                    commandSender.sendMessage("§a /az " + azCommand.name() + " :§f " + azCommand.description());
                 }
                 return true;
             }
             for (Map.Entry<Class<? extends AZCommand>, AZCommand> azCommand : commands.entrySet()) {
                 if (args[0].equalsIgnoreCase(azCommand.getValue().name())) {
                     if (!commandSender.hasPermission(azCommand.getValue().permission())) {
-                        commandSender.sendMessage("§cVous n'avez pas la permission d'utiliser cette commande !");
+                        commandSender.sendMessage("§cErreur: Vous n'avez pas la permission d'utiliser cette commande !");
                         return true;
                     }
                     azCommand.getValue().execute(commandSender, args);

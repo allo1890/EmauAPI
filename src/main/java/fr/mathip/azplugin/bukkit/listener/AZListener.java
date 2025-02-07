@@ -17,6 +17,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import static fr.mathip.azplugin.bukkit.AZPlayer.hasAZLauncher;
+
 public class AZListener implements Listener {
 
     @EventHandler
@@ -32,12 +34,18 @@ public class AZListener implements Listener {
         AZPlugin main = AZPlugin.getInstance();
         ConfigManager config = ConfigManager.getInstance();
 
-        if (AZPlayer.hasAZLauncher(player)){
+        if (hasAZLauncher(player)){
             if (config.getJoinWithAZCommands() != null) {
                 config.getJoinWithAZCommands().forEach(command -> {
                     Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command.replaceAll("%player%", player.getName()));
                 });
             }
+
+            // Ceci permet au joueur qui ne sont pas sous AZ de ne pas être connecter sur le serveur. à utiliser avec un Proxy //
+            if (!hasAZLauncher(player)) {
+                player.kickPlayer("§cVous devez utiliser le AZLauncher pour vous connecter ! Voici le site: §bhttps://www.az-launcher.nz/fr/");
+            }
+
         } else {
             if (config.getJoinWithoutAZCommands() != null) {
                 config.getJoinWithoutAZCommands().forEach(command -> {
@@ -45,6 +53,7 @@ public class AZListener implements Listener {
                 });
             }
         }
+
         if (main.isUpdate && config.isUpdateMessage() && player.hasPermission("azplugin.update")) {
             player.sendMessage("§6Une nouvelle version du §bAZPlugin§6 a été détecté !");
             player.sendMessage("§bhttps://www.spigotmc.org/resources/azplugin.115548/");
