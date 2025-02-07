@@ -52,7 +52,7 @@ public class AZVignette implements AZCommand {
             }
 
             PacketVignette.setVignette(target, red, green, blue);
-            sender.sendMessage("§a[§2EmauVignette§a]§f Changement d'environnement effectué pour " + target.getName() + " !");
+            sender.sendMessage("§a[§2EmauVignette§a]§f Changement d'environnement effectué pour le joueur §b" + target.getName() + " §f!");
         } catch (NumberFormatException e) {
             sender.sendMessage("§a[§2EmauVignette§a]§f Erreur: Veuillez entrer des nombres valides entre 0 et 255 pour les couleurs !");
         }

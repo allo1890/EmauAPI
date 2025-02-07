@@ -78,7 +78,7 @@ public class AZSummon implements AZCommand{
         for (Player player1 : location.getWorld().getPlayers()) {
             AZManager.sendPLSPMessage(player1, packetEntityMeta);
         }
-        sender.sendMessage("§a[§2EmauSummon§a]§f entité crée avec succès");
+        sender.sendMessage("§a[§2EmauSummon§a]§f Entité crée avec succès !");
 
     }
 }

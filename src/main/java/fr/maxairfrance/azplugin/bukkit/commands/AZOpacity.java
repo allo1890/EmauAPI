@@ -63,6 +63,6 @@ public class AZOpacity implements AZCommand {
         azPlayer.getEntityMeta().setOpacity(opacity);
         azPlayer.updateMeta();
 
-        sender.sendMessage("§a[§2EmauOpacity§a] §fChangement d'opacité effectué pour §b" + target.getName() + "§f !");
+        sender.sendMessage("§a[§2EmauOpacity§a] §fChangement d'opacité  pour le joueur §b" + target.getName() + " §feffectué !");
     }
 }
