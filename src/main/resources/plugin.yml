@@ -1,6 +1,6 @@
 name: AZPlugin
 version: '${project.version}'
-main: fr.mathip.azplugin.bukkit.AZPlugin
+main: fr.maxairfrance.azplugin.bukkit.AZPlugin
 author: MaxAirFrance
 softdepend: [Protocolib]
 commands:

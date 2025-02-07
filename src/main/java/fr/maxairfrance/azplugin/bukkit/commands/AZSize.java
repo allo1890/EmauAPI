@@ -1,0 +1,67 @@
+package fr.maxairfrance.azplugin.bukkit.commands;
+
+import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.AZPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import pactify.client.api.plprotocol.metadata.PactifyScaleMetadata;
+
+public class AZSize implements AZCommand{
+    @Override
+    public String name() {
+        return "size";
+    }
+
+    @Override
+    public String permission() {
+        return "azplugin.command.size";
+    }
+
+    @Override
+    public String description() {
+        return "Change la taille d'un joueur";
+    }
+
+    @Override
+    public void execute(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage("§c/az size <taille> [joueur]");
+            return;
+        }
+        Player target;
+        Float size;
+        try {
+            size = Float.parseFloat(args[1]);
+        } catch (NumberFormatException e) {
+            sender.sendMessage("§cErreur : La taille n'est pas un nombre valide.");
+            return;
+        }
+        if (args.length >= 3) {
+            target = Bukkit.getPlayer(args[2]);
+            if (target == null) {
+                sender.sendMessage("§cCe joueur est hors-ligne !");
+                return;
+            }
+        } else {
+            target = (Player) sender;
+            if (target == null) {
+                sender.sendMessage("§cErreur: Vous devez être un joueur pour executer cette commande");
+                return;
+            }
+        }
+        AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer(target);
+        PactifyScaleMetadata scaleMetadata = new PactifyScaleMetadata();
+        scaleMetadata.setBboxH(size);
+        scaleMetadata.setBboxW(size);
+        scaleMetadata.setRenderD(size);
+        scaleMetadata.setRenderH(size);
+        scaleMetadata.setRenderW(size);
+        scaleMetadata.setDefined(true);
+        scaleMetadata.setTags(size);
+        azPlayer.getPlayerMeta().setScale(scaleMetadata);
+        azPlayer.getEntityMeta().setScale(scaleMetadata);
+        Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.getInstance(), azPlayer::updateMeta);
+        sender.sendMessage("§a[§2AZPlugin§f]§f Changement de taille effectué !");
+    }
+}
