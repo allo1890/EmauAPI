@@ -104,6 +104,30 @@ public class AZTabComplete implements TabCompleter {
                         }
                         break;
 
+                    case "subtag":
+                        if (args.length == 2) {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                if (player.getName().toLowerCase().startsWith(argLower)) {
+                                    completion.add(player.getName());
+                                }
+                            }
+                        } else if (args.length == 3) {
+                            completion.add("reset");
+                        }
+                        break;
+
+                    case "tag":
+                        if (args.length == 2) {
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                if (player.getName().toLowerCase().startsWith(argLower)) {
+                                    completion.add(player.getName());
+                                }
+                            }
+                        } else if (args.length == 3) {
+                            completion.add("reset");
+                        }
+                        break;
+
                     case "suptag":
                         if (args.length == 2) {
                             for (Player player : Bukkit.getOnlinePlayers()) {
