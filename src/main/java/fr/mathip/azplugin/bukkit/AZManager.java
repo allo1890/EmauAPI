@@ -38,17 +38,17 @@ public class AZManager implements Listener, Closeable {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(final PlayerLoginEvent event) {
-        event.getPlayer().setMetadata("AZPlugin:hostname", new FixedMetadataValue(this.plugin, event.getHostname()));
-        final AZPlayer AZPlayer;
-        this.players.put(event.getPlayer().getUniqueId(), AZPlayer = new AZPlayer(this, event.getPlayer()));
-        AZPlayer.init();
-    }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerLoginMonitor(final PlayerLoginEvent event) {
+        event.getPlayer().setMetadata("AZPlugin:hostname", new FixedMetadataValue(this.plugin, event.getHostname()));
+
         if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
             this.playerQuit(event.getPlayer());
+            return;
         }
+
+        final AZPlayer AZPlayer = new AZPlayer(this, event.getPlayer());
+        this.players.put(event.getPlayer().getUniqueId(), AZPlayer);
+        AZPlayer.init();
     }
 
     @EventHandler
