@@ -63,13 +63,14 @@ public class AZTabComplete implements TabCompleter {
                         break;
 
                     case "summon":
-                        if (EntityType.values() != null) {
+                        if (args.length == 2) {
                             for (EntityType entityType : EntityType.values()) {
-                                if (entityType.name().toLowerCase().startsWith(argLower)) {
-                                    completion.add(entityType.name());
-                                }
+                                completion.add(entityType.name());
                             }
-                        }
+                                } else if (args.length == 3) {
+                                    completion.add("1");
+                                    completion.add("2");
+                                }
                         break;
 
                     case "popup":
