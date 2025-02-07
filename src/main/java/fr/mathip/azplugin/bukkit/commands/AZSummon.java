@@ -1,9 +1,7 @@
-// Celui-ci fonctionne sous BungeeCord
-
 package fr.mathip.azplugin.bukkit.commands;
 
-import fr.mathip.azplugin.bukkit.Main;
 import fr.mathip.azplugin.bukkit.AZManager;
+import fr.mathip.azplugin.bukkit.AZPlugin;
 import fr.mathip.azplugin.bukkit.handlers.PLSPPlayerModel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -76,7 +74,7 @@ public class AZSummon implements AZCommand{
         Entity entity = location.getWorld().spawnEntity(location, EntityType.fromId(PLSPPlayerModel.valueOf(args[1]).getId()));
         PLSPPacketEntityMeta packetEntityMeta = new PLSPPacketEntityMeta(entity.getEntityId());
         packetEntityMeta.setScale(new PactifyScaleMetadata(size, size, size, size, size, true));
-        Main.getInstance().entitiesSize.put(entity, packetEntityMeta);
+        AZPlugin.getInstance().entitiesSize.put(entity, packetEntityMeta);
         for (Player player1 : location.getWorld().getPlayers()) {
             AZManager.sendPLSPMessage(player1, packetEntityMeta);
         }

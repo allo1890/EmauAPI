@@ -1,8 +1,10 @@
 package fr.mathip.azplugin.bukkit;
 
+import fr.mathip.azplugin.bukkit.config.ConfigManager;
 import fr.mathip.azplugin.bukkit.handlers.PLSPConfFlag;
 import fr.mathip.azplugin.bukkit.handlers.PLSPConfInt;
 import fr.mathip.azplugin.bukkit.packets.PacketConf;
+import fr.mathip.azplugin.bukkit.packets.PacketUiComponent;
 import fr.mathip.azplugin.bukkit.utils.*;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -10,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import pactify.client.api.plprotocol.metadata.PactifyModelMetadata;
 import pactify.client.api.plprotocol.model.cosmetic.PactifyCosmeticEquipment;
 import pactify.client.api.plprotocol.model.cosmetic.PactifyCosmeticEquipmentSlot;
 import pactify.client.api.plsp.packet.client.*;
@@ -22,18 +25,14 @@ import java.util.regex.Pattern;
 
 @Getter
 public class AZPlayer {
-    private static final Pattern AZ_HOSTNAME_PATTERN;
+    private static final Pattern AZ_HOSTNAME_PATTERN = Pattern.compile("[\u0000\u0002]PAC([0-9A-F]{5})[\u0000\u0002]");
     private final AZManager service;
     private final Player player;
     private final Set<Integer> scheduledTasks;
     private boolean joined;
     private int launcherProtocolVersion;
-
-    private final PLSPPacketEntityMeta playerMeta;
-
-    static {
-        AZ_HOSTNAME_PATTERN = Pattern.compile("[\u0000\u0002]PAC([0-9A-F]{5})[\u0000\u0002]");
-    }
+    private final PLSPPacketPlayerMeta playerMeta;
+    private final PLSPPacketEntityMeta entityMeta;
 
     public void init() {
         final List<MetadataValue> hostnameMeta = this.player.getMetadata("AZPlugin:hostname");
@@ -62,14 +61,14 @@ public class AZPlayer {
         packetCosmeticEquipment.setPlayerId(this.player.getUniqueId());
         packetCosmeticEquipment.setSlot(PactifyCosmeticEquipmentSlot.CUSTOM_1);
         packetCosmeticEquipment.setEquipment(cosmeticEquipment);
-        Bukkit.getScheduler().runTaskLater(Main. instance, () -> {
+        Bukkit.getScheduler().runTaskLater(AZPlugin. instance, () -> {
             this.sendCustomItems();
             AZManager.sendPLSPMessage(this.player, packetCosmeticEquipment);
         }, 40L);
     }
 
     public void free() {
-        SchedulerUtil.cancelTasks(Main.getInstance(), this.scheduledTasks);
+        SchedulerUtil.cancelTasks(AZPlugin.getInstance(), this.scheduledTasks);
     }
 
     public void loadFlags() {
@@ -88,16 +87,15 @@ public class AZPlayer {
         PacketConf.setFlag(player, PLSPConfFlag.SERVER_SIDE_ANVIL, config.isServerSideAnvil());
         PacketConf.setFlag(player, PLSPConfFlag.PISTONS_RETRACT_ENTITIES, config.isPistonRetractEntities());
         PacketConf.setFlag(player, PLSPConfFlag.HIT_INDICATOR, config.isHitIndicator());
-
         PacketConf.setInt(player, PLSPConfInt.CHAT_MESSAGE_MAX_SIZE, config.getChatMaxMessageSize());
         PacketConf.setInt(player, PLSPConfInt.MAX_BUILD_HEIGHT, config.getMaxBuildHeight());
 
         for (PacketUiComponent uiComponent : config.getUIComponents()) {
             AZChatComponent azChatComponent = new AZChatComponent(uiComponent.getText());
-            if (!uiComponent.getHoverText().equals("")) {
+            if (!uiComponent.getHoverText().isEmpty()) {
                 azChatComponent.setHoverEvent(new AZChatComponent.HoverEvent("show_text", uiComponent.getHoverText().replaceAll("%player%", player.getName())));
             }
-            if (!uiComponent.getCommmand().equals("")) {
+            if (!uiComponent.getCommmand().isEmpty()) {
                 azChatComponent.setClickEvent(new AZChatComponent.ClickEvent("run_command", uiComponent.getCommmand().replaceAll("%player%", player.getName())));
             }
             PLSPPacketUiComponent packetUiComponent = new PLSPPacketUiComponent(uiComponent.getName(), azChatComponent);
@@ -113,8 +111,10 @@ public class AZPlayer {
         this.scheduledTasks = new HashSet<Integer>();
         this.service = service;
         this.player = player;
-        this.playerMeta = new PLSPPacketEntityMeta(player.getEntityId());
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> loadFlags());
+        this.playerMeta = new PLSPPacketPlayerMeta(player.getUniqueId());
+        this.entityMeta = new PLSPPacketEntityMeta(player.getEntityId());
+        this.playerMeta.setModel(new PactifyModelMetadata(-1));
+        Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.getInstance(), this::loadFlags);
     }
 
     @Override
@@ -192,7 +192,16 @@ public class AZPlayer {
     }
 
     public static boolean hasAZLauncher(final Player player) {
-        return Main.getAZManager().getPlayer(player).hasLauncher();
+        return AZPlugin.getAZManager().getPlayer(player).hasLauncher();
+    }
+
+
+    public void updateMeta() {
+        for (Player pl : this.player.getWorld().getPlayers()) {
+            AZManager.sendPLSPMessage(pl, this.entityMeta);
+        }
+
+        AZManager.sendPLSPMessage(this.player, this.playerMeta);
     }
 
     private void sendCustomItems() {
@@ -202,10 +211,4 @@ public class AZPlayer {
         AZManager.sendPLSPMessage(this.player, additionalContent);
     }
 
-    public void updateMeta() {
-        AZManager.sendPLSPMessage(player, this.playerMeta);
-        for (Player pl : this.player.getWorld().getPlayers()) {
-            AZManager.sendPLSPMessage(pl, this.playerMeta);
-        }
-    }
 }

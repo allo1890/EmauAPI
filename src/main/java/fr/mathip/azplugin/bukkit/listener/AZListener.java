@@ -1,9 +1,13 @@
-package fr.mathip.azplugin.bukkit;
+package fr.mathip.azplugin.bukkit.listener;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import fr.mathip.azplugin.bukkit.AZManager;
+import fr.mathip.azplugin.bukkit.AZPlayer;
+import fr.mathip.azplugin.bukkit.AZPlugin;
+import fr.mathip.azplugin.bukkit.config.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,7 +21,7 @@ public class AZListener implements Listener {
 
     @EventHandler
     void onQuit(PlayerQuitEvent e){
-        Main main = Main.getInstance();
+        AZPlugin main = AZPlugin.getInstance();
         Player p = e.getPlayer();
         main.playersSeeChunks.remove(p);
     }
@@ -25,7 +29,7 @@ public class AZListener implements Listener {
     @EventHandler
     void onJoint(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        Main main = Main.getInstance();
+        AZPlugin main = AZPlugin.getInstance();
         ConfigManager config = ConfigManager.getInstance();
 
         if (AZPlayer.hasAZLauncher(player)){
@@ -48,10 +52,10 @@ public class AZListener implements Listener {
     }
     @EventHandler
     void onDeath(EntityDeathEvent e) {
-        Main.getInstance().entitiesSize.remove(e.getEntity());
+        AZPlugin.getInstance().entitiesSize.remove(e.getEntity());
     }
 
-    public AZListener(Main main) {
+    public AZListener(AZPlugin main) {
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(main, PacketType.Play.Server.SPAWN_ENTITY, PacketType.Play.Server.SPAWN_ENTITY_LIVING, PacketType.Play.Server.SPAWN_ENTITY_EXPERIENCE_ORB, PacketType.Play.Server.NAMED_ENTITY_SPAWN) {
             @Override
             public void onPacketSending(PacketEvent event) {
@@ -59,10 +63,10 @@ public class AZListener implements Listener {
                 Player player = event.getPlayer();
                 Entity entity = event.getPacket().getEntityModifier(player.getWorld()).read(0);
                 if (entity instanceof Player) {
-                    AZPlayer azPlayer = Main.getAZManager().getPlayer((Player)entity);
+                    AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer((Player)entity);
                     AZManager.sendPLSPMessage(player, azPlayer.getPlayerMeta());
-                } else if (Main.getInstance().entitiesSize.containsKey(entity)) {
-                    AZManager.sendPLSPMessage(player, Main.getInstance().entitiesSize.get(entity));
+                } else if (AZPlugin.getInstance().entitiesSize.containsKey(entity)) {
+                    AZManager.sendPLSPMessage(player, AZPlugin.getInstance().entitiesSize.get(entity));
                 }
             }
         });

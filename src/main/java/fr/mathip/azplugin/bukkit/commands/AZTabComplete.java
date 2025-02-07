@@ -1,6 +1,6 @@
 package fr.mathip.azplugin.bukkit.commands;
 
-import fr.mathip.azplugin.bukkit.PopupConfig;
+import fr.mathip.azplugin.bukkit.config.PopupConfig;
 import fr.mathip.azplugin.bukkit.handlers.PLSPPlayerModel;
 import fr.mathip.azplugin.bukkit.handlers.PLSPWorldEnv;
 import fr.mathip.azplugin.bukkit.packets.PacketPopup;

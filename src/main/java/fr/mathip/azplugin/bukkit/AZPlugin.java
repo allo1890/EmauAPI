@@ -1,5 +1,7 @@
 package fr.mathip.azplugin.bukkit;
 
+import fr.mathip.azplugin.bukkit.config.ConfigManager;
+import fr.mathip.azplugin.bukkit.listener.AZListener;
 import fr.mathip.azplugin.bukkit.packets.PacketWindow;
 import fr.mathip.azplugin.bukkit.commands.*;
 import lombok.Getter;
@@ -14,10 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public final class Main extends JavaPlugin {
+public final class AZPlugin extends JavaPlugin {
 
     @Getter
-    static public Main instance;
+    static public AZPlugin instance;
     @Getter
     private static AZManager AZManager;
     public HashMap<Entity, PLSPPacketEntityMeta> entitiesSize;
@@ -29,14 +31,14 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Metrics metrics = new Metrics(this, 21554);
         instance = this;
         saveDefaultConfig();
+        Metrics metrics = new Metrics(this, 21554);
         new ConfigManager(this);
         getServer().getPluginManager().registerEvents(new PacketWindow(this), this);
         AZManager = new AZManager(this);
         commandManager = new CommandManager();
-         getCommand("az").setExecutor(commandManager);
+        getCommand("az").setExecutor(commandManager);
         getCommand("az").setTabCompleter(new AZTabComplete());
         Bukkit.getPluginManager().registerEvents(new AZListener(this), this);
         entitiesSize = new HashMap<>();
@@ -63,7 +65,6 @@ public final class Main extends JavaPlugin {
         commandManager.addCommand(new AZSummon());
         commandManager.addCommand(new AZItemRender());
         commandManager.addCommand(new AZPopup());
-        commandManager.addCommand(new AZReload());
     }
 
     public String getPluginVersion() {

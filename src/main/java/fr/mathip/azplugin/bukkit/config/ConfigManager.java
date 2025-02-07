@@ -1,38 +1,52 @@
-package fr.mathip.azplugin.bukkit;
+package fr.mathip.azplugin.bukkit.config;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import fr.mathip.azplugin.bukkit.AZPlugin;
+import fr.mathip.azplugin.bukkit.packets.PacketUiComponent;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.bukkit.configuration.ConfigurationSection;
+
 import java.util.ArrayList;
-import java.util.List;
 
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Setter
+@Slf4j
 public class ConfigManager {
+    private final AZPlugin main;
     @Getter
-    static ConfigManager instance;
-    final Main main;
+    private static ConfigManager instance;
+    private boolean attackCooldown;
+    private boolean playerPush;
+    private boolean largeHitBox;
+    private boolean swordBlocking;
+    private boolean hitAndBlock;
+    private boolean oldEnchantments;
+    private boolean pvpHitPriority;
+    private boolean seeChunks;
+    private boolean sidebarScore;
+    private boolean smoothExperienceBar;
+    private boolean sortTabListByName;
+    private boolean serverSideAnvil;
+    private boolean pistonRetractEntities;
+    private boolean hitIndicator;
+    private boolean updateMessage;
+    private int chatMaxMessageSize;
+    private int maxBuildHeight;
+    private ArrayList<String> joinWithAZCommands = new ArrayList<>();
+    private ArrayList<String> joinWithoutAZCommands = new ArrayList<>();
+    private ArrayList<String> specialInventoryCharacters = new ArrayList<>();
+    private ArrayList<PacketUiComponent> UIComponents = new ArrayList<>();
 
-    boolean attackCooldown, playerPush, largeHitBox, swordBlocking, hitAndBlock, oldEnchantments, pvpHitPriority,
-            seeChunks, sidebarScore, smoothExperienceBar, sortTabListByName, serverSideAnvil, pistonRetractEntities, hitIndicator, updateMessage;
-
-    int chatMaxMessageSize, maxBuildHeight;
-
-    List<String> joinWithAZCommands = new ArrayList<>();
-    List<String> joinWithoutAZCommands = new ArrayList<>();
-    List<String> specialInventoryCharacters = new ArrayList<>();
-    List<PacketUiComponent> UIComponents = new ArrayList<>();
-
-    public ConfigManager(Main main) {
+    public ConfigManager(AZPlugin main) {
         this.main = main;
         instance = this;
         initConfig();
     }
 
     public void initConfig() {
-        joinWithAZCommands = main.getConfig().getStringList("join-with-az-commands");
-        joinWithoutAZCommands = main.getConfig().getStringList("join-without-az-commands");
-        specialInventoryCharacters = main.getConfig().getStringList("special-transparent-inventory-character");
+        joinWithAZCommands = (ArrayList<String>) main.getConfig().get("join-with-az-commands");
+        joinWithoutAZCommands = (ArrayList<String>) main.getConfig().get("join-without-az-commands");
 
         updateMessage = main.getConfig().getBoolean("update-message");
         attackCooldown = main.getConfig().getBoolean("attack_cooldown");
@@ -53,7 +67,8 @@ public class ConfigManager {
         chatMaxMessageSize = main.getConfig().getInt("chat_message_max_size");
         maxBuildHeight = main.getConfig().getInt("max_build_height");
 
-        new PopupConfig(Main.getInstance());
+        specialInventoryCharacters = (ArrayList<String>) main.getConfig().get("special-transparent-inventory-character");
+        new PopupConfig(AZPlugin.getInstance());
 
         UIComponents = new ArrayList<>();
         ConfigurationSection cs = main.getConfig().getConfigurationSection("ui-buttons");
@@ -70,8 +85,6 @@ public class ConfigManager {
                 }
             }
         }
-
-        main.getLogger().info("Config loaded !");
+        log.info("Config loaded !");
     }
-
 }

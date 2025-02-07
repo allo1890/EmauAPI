@@ -1,8 +1,6 @@
-// Celui-ci fonctionne sous BungeeCord
-
 package fr.mathip.azplugin.bukkit.commands;
 
-import fr.mathip.azplugin.bukkit.PopupConfig;
+import fr.mathip.azplugin.bukkit.config.PopupConfig;
 import fr.mathip.azplugin.bukkit.packets.PacketPopup;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

@@ -16,7 +16,7 @@ public class AZUpdate {
     @Getter
     private String newVersion;
 
-    public AZUpdate(Main main, Integer pluginId) {
+    public AZUpdate(AZPlugin main, Integer pluginId) {
         this.thisVersion = main.getPluginVersion();
         try {
             this.checkURL = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + pluginId);

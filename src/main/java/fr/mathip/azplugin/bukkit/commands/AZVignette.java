@@ -1,5 +1,3 @@
-// Celui-ci fonctionne sous BungeeCord
-
 package fr.mathip.azplugin.bukkit.commands;
 
 import fr.mathip.azplugin.bukkit.AZManager;
@@ -27,21 +25,25 @@ public class AZVignette implements AZCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Player target;
+        if (!sender.hasPermission("azplugin.command.vignette")) {
+            sender.sendMessage("§a[§2EmauPlugin§a]§f Vous n'avez pas la permission d'utiliser cette commande !");
+            return;
+        }
 
+        Player p = null;
         if (args.length >= 5) {
-            target = Bukkit.getPlayer(args[4]);
-            if (target == null) {
-                sender.sendMessage("§cCe joueur est hors-ligne !");
+            p = Bukkit.getPlayer(args[4]);
+            if (p == null) {
+                sender.sendMessage("§a[§2EmauPlugin§a]§f Le joueur est hors-ligne !");
                 return;
             }
-        } else {
-            if (sender instanceof Player) {
-                target = (Player) sender;
-            } else {
-                sender.sendMessage("§cErreur: Vous devez être un joueur pour exécuter cette commande");
-                return;
-            }
+        } else if (sender instanceof Player) {
+            p = (Player) sender;
+        }
+
+        if (p == null) {
+            sender.sendMessage("§cErreur: Vous devez être un joueur pour exécuter cette commande !");
+            return;
         }
 
         if (args.length >= 4) {
@@ -56,22 +58,15 @@ public class AZVignette implements AZCommand {
                 }
 
                 PLSPPacketVignette packetVignette = new PLSPPacketVignette(true, red, green, blue);
-                AZManager.sendPLSPMessage(target, packetVignette);
-                sender.sendMessage("§a[AZPlugin]§e Changement d'environnement effectué");
+                AZManager.sendPLSPMessage(p, packetVignette);
+                sender.sendMessage("§a[§2EmauPlugin§a]§f Changement d'environnement effectué !");
 
             } catch (NumberFormatException e) {
                 sender.sendMessage("§cErreur: Les valeurs RGB sont invalides. Assurez-vous de fournir des nombres.");
             }
-        }
-        else if (args.length == 3 && args[2].equalsIgnoreCase("reset")) {
-            PLSPPacketVignette packetVignette = new PLSPPacketVignette();
-            packetVignette.setEnabled(false);
-            AZManager.sendPLSPMessage(target, packetVignette);
-            sender.sendMessage("§a[AZPlugin]§e Vignette réinitialisée pour " + target.getName());
-        }
-        else {
-            sender.sendMessage("§cUsage: /az vignette <R> <G> <B> [joueur]");
-            sender.sendMessage("§aVous pouvez utiliser ce site pour faire des couleurs RGB : https://htmlcolorcodes.com/fr/");
+        } else {
+            sender.sendMessage("§cUsage: /az vignette <red> <green> <blue> [player]");
+            sender.sendMessage("§fVous pouvez utiliser ce site pour faire des couleurs RGB : §ahttps://htmlcolorcodes.com/fr/");
         }
     }
 }

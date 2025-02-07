@@ -2,9 +2,9 @@
 
 package fr.mathip.azplugin.bukkit.commands;
 
-import fr.mathip.azplugin.bukkit.Main;
 import fr.mathip.azplugin.bukkit.AZManager;
 import fr.mathip.azplugin.bukkit.AZPlayer;
+import fr.mathip.azplugin.bukkit.AZPlugin;
 import fr.mathip.azplugin.bukkit.handlers.PLSPWorldEnv;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -46,7 +46,7 @@ public class AZWorldEnv implements AZCommand{
                 return;
             }
         }
-        AZPlayer azPlayer = Main.getAZManager().getPlayer(target);
+        AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer(target);
 
         PLSPPacketWorldEnv worldEnvPacket = new PLSPPacketWorldEnv();
         worldEnvPacket.setName(target.getWorld().getName());

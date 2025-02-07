@@ -6,8 +6,8 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import fr.mathip.azplugin.bukkit.ConfigManager;
-import fr.mathip.azplugin.bukkit.Main;
+import fr.mathip.azplugin.bukkit.config.ConfigManager;
+import fr.mathip.azplugin.bukkit.AZPlugin;
 import fr.mathip.azplugin.bukkit.AZPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,7 +23,7 @@ public class PacketWindow implements Listener {
     private static final Map<UUID, Integer> windowId = new HashMap<>();
     public static final Set<UUID> customWindow = new HashSet<>();
 
-    public PacketWindow(Main plugin) {
+    public PacketWindow(AZPlugin plugin) {
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.TRANSACTION) {
             @Override
             public void onPacketSending(PacketEvent event) {

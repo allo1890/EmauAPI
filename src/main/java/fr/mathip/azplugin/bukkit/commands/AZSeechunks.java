@@ -2,7 +2,7 @@
 
 package fr.mathip.azplugin.bukkit.commands;
 
-import fr.mathip.azplugin.bukkit.Main;
+import fr.mathip.azplugin.bukkit.AZPlugin;
 import fr.mathip.azplugin.bukkit.handlers.PLSPConfFlag;
 import fr.mathip.azplugin.bukkit.packets.PacketConf;
 import org.bukkit.Bukkit;
@@ -40,12 +40,12 @@ public class AZSeechunks implements AZCommand{
                     }
                     return;
                 }
-                if (Main.getInstance().playersSeeChunks.contains(target)) {
+                if (AZPlugin.getInstance().playersSeeChunks.contains(target)) {
                     PacketConf.setFlag(target, PLSPConfFlag.SEE_CHUNKS, false);
-                    Main.getInstance().playersSeeChunks.remove(target);
+                    AZPlugin.getInstance().playersSeeChunks.remove(target);
                 } else {
                     PacketConf.setFlag(target, PLSPConfFlag.SEE_CHUNKS, true);
-                    Main.getInstance().playersSeeChunks.add(target);
+                    AZPlugin.getInstance().playersSeeChunks.add(target);
                 }
 
             } else {

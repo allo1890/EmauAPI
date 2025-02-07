@@ -1,6 +1,6 @@
 package fr.mathip.azplugin.bukkit.commands;
 
-import fr.mathip.azplugin.bukkit.Main;
+import fr.mathip.azplugin.bukkit.AZPlugin;
 import fr.mathip.azplugin.bukkit.AZPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -37,7 +37,7 @@ public class AZSupTag implements AZCommand{
             sender.sendMessage("§cUsage: /az suptag <joueur> <tag>");
             return;
         }
-        AZPlayer azPlayer = Main.getAZManager().getPlayer(target);
+        AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer(target);
         if (args[2].equalsIgnoreCase("reset")) {
             azPlayer.getPlayerMeta().setSupTag(new ImmutablePactifyTagMetadata(""));
             azPlayer.updateMeta();
@@ -56,7 +56,7 @@ public class AZSupTag implements AZCommand{
         PactifyTagMetadata tagMetadata = new PactifyTagMetadata();
         tagMetadata.setText(sb.toString());
         azPlayer.getPlayerMeta().setSupTag(tagMetadata);
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), azPlayer::updateMeta, 1);
+        Bukkit.getScheduler().runTaskLater(AZPlugin.getInstance(), azPlayer::updateMeta, 1);
         sender.sendMessage("§a[AZPlugin]§e changement de tag effectué !");
     }
 }

@@ -1,6 +1,6 @@
 package fr.mathip.azplugin.bukkit.commands;
 
-import fr.mathip.azplugin.bukkit.Main;
+import fr.mathip.azplugin.bukkit.AZPlugin;
 import fr.mathip.azplugin.bukkit.AZPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -46,12 +46,13 @@ public class AZOpacity implements AZCommand{
                 return;
             }
         }
-        AZPlayer azPlayer = Main.getAZManager().getPlayer(target);
+        AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer(target);
         if (opacity > 1 || opacity < -1) {
             sender.sendMessage("§cErreur: L'opacité droit être entre 1 et -1");
             return;
         }
         azPlayer.getPlayerMeta().setOpacity(opacity);
+        azPlayer.getEntityMeta().setOpacity(opacity);
         azPlayer.updateMeta();
         sender.sendMessage("§a[AZPlugin]§e changement de d'opacité effectué !");
     }

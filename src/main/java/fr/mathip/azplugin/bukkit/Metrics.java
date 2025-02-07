@@ -750,35 +750,31 @@ public class Metrics {
         /**
          * Appends an integer array to the JSON.
          *
-         * @param key The key of the field.
+         * @param key    The key of the field.
          * @param values The integer array.
-         * @return A reference to this object.
          */
-        public JsonObjectBuilder appendField(String key, int[] values) {
+        public void appendField(String key, int[] values) {
             if (values == null) {
                 throw new IllegalArgumentException("JSON values must not be null");
             }
             String escapedValues =
                     Arrays.stream(values).mapToObj(String::valueOf).collect(Collectors.joining(","));
             appendFieldUnescaped(key, "[" + escapedValues + "]");
-            return this;
         }
 
         /**
          * Appends an object array to the JSON.
          *
-         * @param key The key of the field.
+         * @param key    The key of the field.
          * @param values The integer array.
-         * @return A reference to this object.
          */
-        public JsonObjectBuilder appendField(String key, JsonObject[] values) {
+        public void appendField(String key, JsonObject[] values) {
             if (values == null) {
                 throw new IllegalArgumentException("JSON values must not be null");
             }
             String escapedValues =
                     Arrays.stream(values).map(JsonObject::toString).collect(Collectors.joining(","));
             appendFieldUnescaped(key, "[" + escapedValues + "]");
-            return this;
         }
 
         /**
@@ -816,10 +812,8 @@ public class Metrics {
         }
 
         /**
-         * Escapes the given string like stated in https://www.ietf.org/rfc/rfc4627.txt.
          *
          * <p>This method escapes only the necessary characters '"', '\'. and '\u0000' - '\u001F'.
-         * Compact escapes are not used (e.g., '\n' is escaped as "\u000a" and not as "\n").
          *
          * @param value The value to escape.
          * @return The escaped value.

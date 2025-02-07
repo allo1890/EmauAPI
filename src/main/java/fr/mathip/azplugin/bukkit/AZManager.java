@@ -1,6 +1,7 @@
 package fr.mathip.azplugin.bukkit;
 
 import fr.mathip.azplugin.bukkit.utils.PLSPPacketBuffer;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,6 +25,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class AZManager implements Listener, Closeable {
+    @Getter
     private final Plugin plugin;
     private final Map<UUID, AZPlayer> players;
 
@@ -77,18 +79,14 @@ public class AZManager implements Listener, Closeable {
             PLSPProtocol.PacketData<?> packetData = PLSPProtocol.getClientPacketByClass(message.getClass());
             NotchianPacketUtil.writeString(buf, packetData.getId(), 32767);
             message.write(buf);
-            player.sendPluginMessage(Main.getInstance(), "PLSP", buf.toBytes());
+            player.sendPluginMessage(AZPlugin.getInstance(), "PLSP", buf.toBytes());
         } catch (Exception e) {
-            Main.getInstance().getLogger().log(Level.WARNING, "Exception sending PLSP message to " + ((player != null) ? player.getName() : "null") + ":", e);
+            AZPlugin.getInstance().getLogger().log(Level.WARNING, "Exception sending PLSP message to " + ((player != null) ? player.getName() : "null") + ":", e);
         }
     }
 
     public void close() throws IOException {
         HandlerList.unregisterAll(this);
         this.plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(this.plugin, "PLSP");
-    }
-
-    public Plugin getPlugin() {
-        return this.plugin;
     }
 }

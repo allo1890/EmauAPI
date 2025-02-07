@@ -1,6 +1,6 @@
 package fr.mathip.azplugin.bukkit.packets;
 
-import fr.mathip.azplugin.bukkit.Main;
+import fr.mathip.azplugin.bukkit.AZPlugin;
 import fr.mathip.azplugin.bukkit.AZManager;
 import fr.mathip.azplugin.bukkit.handlers.PLSPConfFlag;
 import fr.mathip.azplugin.bukkit.handlers.PLSPConfInt;
@@ -9,7 +9,7 @@ import pactify.client.api.plsp.packet.client.PLSPPacketConfFlag;
 import pactify.client.api.plsp.packet.client.PLSPPacketConfInt;
 
 public class PacketConf {
-    private static final AZManager AZManager = Main.getAZManager();
+    private static final AZManager AZManager = AZPlugin.getAZManager();
 
     public static void setFlag(Player player, PLSPConfFlag flag, Boolean enabled) {
         PLSPPacketConfFlag PacketConfFlag = new PLSPPacketConfFlag();
