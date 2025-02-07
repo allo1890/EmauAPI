@@ -1,5 +1,0 @@
-name: AZPlugin
-version: '1.4.1'
-description: A plugin to integrate the AZ Launcher.
-main: fr.mathip.azplugin.bungee.AZClientPlugin
-authors: MaxAirFrance
