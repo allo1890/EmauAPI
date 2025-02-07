@@ -20,6 +20,7 @@ import pactify.client.api.plprotocol.model.cosmetic.PactifyCosmeticEquipment;
 import pactify.client.api.plprotocol.model.cosmetic.PactifyCosmeticEquipmentSlot;
 import pactify.client.api.plsp.packet.client.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class AZPlayer {
     private static final Pattern AZ_HOSTNAME_PATTERN = Pattern.compile("[\u0000\u0002]PAC([0-9A-F]{5})[\u0000\u0002]");
     private final AZManager service;
     private final Player player;
-    private final Set<Integer> scheduledTasks;
+    private final Set<Integer> scheduledTasks = new HashSet();
     private boolean joined;
     private int launcherProtocolVersion;
     private final PLSPPacketPlayerMeta playerMeta;
@@ -54,20 +55,25 @@ public class AZPlayer {
 
     public void join() {
         this.joined = true;
+        AZManager.sendPLSPMessage(this.player, new PLSPPacketReset());
         AZItemStack azItemStack = new AZItemStack(new ItemStack(Material.DIRT));
         PactifyCosmeticEquipment cosmeticEquipment = new PactifyCosmeticEquipment(azItemStack);
         AZChatComponent prefixText = new AZChatComponent("§bKit ");
         prefixText.setClickEvent(new AZChatComponent.ClickEvent("run_command", "/kit pvp"));
         prefixText.setHoverEvent(new AZChatComponent.HoverEvent("show_text", "§béquiper le kit pvp"));
         cosmeticEquipment.setTooltipPrefix(prefixText);
+        List<Integer> items = new ArrayList();
+        items.add(772);
+        items.add(768);
         PLSPPacketPlayerCosmeticEquipment packetCosmeticEquipment = new PLSPPacketPlayerCosmeticEquipment();
         packetCosmeticEquipment.setPlayerId(this.player.getUniqueId());
         packetCosmeticEquipment.setSlot(PactifyCosmeticEquipmentSlot.CUSTOM_1);
         packetCosmeticEquipment.setEquipment(cosmeticEquipment);
-        Bukkit.getScheduler().runTaskLater(AZPlugin. instance, () -> {
-            this.sendCustomItems();
+        Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.instance, () -> {
+            //
             AZManager.sendPLSPMessage(this.player, packetCosmeticEquipment);
-        }, 40L);
+        });
+        this.sendCustomItems();
     }
 
     public void free() {
@@ -110,8 +116,7 @@ public class AZPlayer {
         return this.launcherProtocolVersion > 0;
     }
 
-    public AZPlayer(final AZManager service, final Player player) {
-        this.scheduledTasks = new HashSet<Integer>();
+    public AZPlayer(AZManager service, Player player) {
         this.service = service;
         this.player = player;
         this.playerMeta = new PLSPPacketPlayerMeta(player.getUniqueId());
@@ -175,26 +180,24 @@ public class AZPlayer {
         return other instanceof AZPlayer;
     }
 
-    @Override
     public int hashCode() {
         int result = 1;
-        final Object $service = this.getService();
-        result = result * 59 + (($service == null) ? 43 : $service.hashCode());
-        final Object $player = this.getPlayer();
-        result = result * 59 + (($player == null) ? 43 : $player.hashCode());
-        final Object $scheduledTasks = this.getScheduledTasks();
-        result = result * 59 + (($scheduledTasks == null) ? 43 : $scheduledTasks.hashCode());
+        Object $service = this.getService();
+        result = result * 59 + ($service == null ? 43 : $service.hashCode());
+        Object $player = this.getPlayer();
+        result = result * 59 + ($player == null ? 43 : $player.hashCode());
+        Object $scheduledTasks = this.getScheduledTasks();
+        result = result * 59 + ($scheduledTasks == null ? 43 : $scheduledTasks.hashCode());
         result = result * 59 + (this.isJoined() ? 79 : 97);
         result = result * 59 + this.getLauncherProtocolVersion();
         return result;
     }
 
-    @Override
     public String toString() {
-        return "AZPlayer(service=" + this.getService() + ", player=" + this.getPlayer() + ", scheduledTasks=" + this.getScheduledTasks() + ", joined=" + this.isJoined() + ", launcherProtocolVersion=" + this.getLauncherProtocolVersion() + ")";
+        return "AZClientPlayer(service=" + this.getService() + ", player=" + this.getPlayer() + ", scheduledTasks=" + this.getScheduledTasks() + ", joined=" + this.isJoined() + ", launcherProtocolVersion=" + this.getLauncherProtocolVersion() + ")";
     }
 
-    public static boolean hasAZLauncher(final Player player) {
+    public static boolean hasAZLauncher(Player player) {
         return AZPlugin.getAZManager().getPlayer(player).hasLauncher();
     }
 
@@ -208,10 +211,8 @@ public class AZPlayer {
     }
 
     private void sendCustomItems() {
-        short[] additionalContents = {
-                768, 769, 770, 771, 772, 3072, 3076, 3079, 773, 774, 775, 776 };
+        short[] additionalContents = new short[]{768, 769, 770, 771, 772, 3072, 3076, 3079, 773, 774, 775, 776};
         PLSPPacketAdditionalContent additionalContent = new PLSPPacketAdditionalContent(additionalContents);
         AZManager.sendPLSPMessage(this.player, additionalContent);
     }
-
 }
