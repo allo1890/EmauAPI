@@ -1,12 +1,12 @@
 test-alert:
   #Il y a 3 types de popups: ALERT, CONFIRM et PROMPT
-  #Le ALERT est un menu avec du texte et un bouton pour quitter
+  # L'ALERT est un menu avec du texte et un bouton pour quitter
   type: ALERT
   content:
     - "Voici un exemple de popup de type alert"
     - "Vous pouvez ajouter plusieurs lignes"
   ok-button:
-    command: "/give %player% emerald_sword"
+    command: "" # Ici vous pouvez vous mettre des commandes, comme /give ou divers commande.
 
 
 test-confirm:

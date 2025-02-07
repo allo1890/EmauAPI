@@ -36,7 +36,7 @@ public class AZPopup implements AZCommand{
         PacketPopup popup = PopupConfig.getInstance().getPopupByName(args[1]);
         if (popup != null) {
             popup.send(target);
-            sender.sendMessage("§a[AZPlugin]§e popup envoyé ");
+            sender.sendMessage("§a[§2AZPlugin§a]§f Popup envoyé ");
         } else {
             sender.sendMessage("§cErreur: Popup introuvable !");
         }

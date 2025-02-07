@@ -48,7 +48,7 @@ public class AZModel implements AZCommand{
         if (args[1].equalsIgnoreCase("reset")){
             azPlayer.getPlayerMeta().setModel(new PactifyModelMetadata(-1));
             azPlayer.updateMeta();
-            sender.sendMessage("§achangement de skin effectué !");
+            sender.sendMessage("§a[§2EmauSkin§a] §fChangement de skin effectué !");
             return;
         }
 
@@ -58,7 +58,7 @@ public class AZModel implements AZCommand{
             modelMetadata.setId(plspPlayerModel.getId());
             azPlayer.getPlayerMeta().setModel(modelMetadata);
             Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.getInstance(), azPlayer::updateMeta);
-            sender.sendMessage("§a[AZPlugin]§e changement de skin effectué !");
+            sender.sendMessage("§a[§2AZPlugin§a]§f Changement de skin effectué !");
         } catch (IllegalArgumentException e){
             sender.sendMessage("§cErreur : La valeur est invalide !.");
         }

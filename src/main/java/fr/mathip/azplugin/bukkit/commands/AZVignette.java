@@ -37,7 +37,7 @@ public class AZVignette implements AZCommand {
         Player target = args.length >= 5 ? Bukkit.getPlayer(args[4]) : (sender instanceof Player ? (Player) sender : null);
 
         if (target == null) {
-            sender.sendMessage("§a[§2EmauPlugin§a]§f Le joueur est hors-ligne !");
+            sender.sendMessage("§a[§2EmauVignette§a]§f Le joueur est hors-ligne !");
             return;
         }
 
@@ -47,14 +47,14 @@ public class AZVignette implements AZCommand {
             int blue = Integer.parseInt(args[3]);
 
             if (!isValidColor(red) || !isValidColor(green) || !isValidColor(blue)) {
-                sender.sendMessage("§a[§2EmauPlugin§a]§f Les valeurs de couleur doivent être comprises entre 0 et 255 !");
+                sender.sendMessage("§a[§2EmauVignette§a]§f Les valeurs de couleur doivent être comprises entre 0 et 255 !");
                 return;
             }
 
             PacketVignette.setVignette(target, red, green, blue);
-            sender.sendMessage("§a[§2EmauPlugin§a]§f Changement d'environnement effectué pour " + target.getName() + " !");
+            sender.sendMessage("§a[§2EmauVignette§a]§f Changement d'environnement effectué pour " + target.getName() + " !");
         } catch (NumberFormatException e) {
-            sender.sendMessage("§a[§2EmauPlugin§a]§f Erreur: Veuillez entrer des nombres valides entre 0 et 255 pour les couleurs !");
+            sender.sendMessage("§a[§2EmauVignette§a]§f Erreur: Veuillez entrer des nombres valides entre 0 et 255 pour les couleurs !");
         }
     }
 

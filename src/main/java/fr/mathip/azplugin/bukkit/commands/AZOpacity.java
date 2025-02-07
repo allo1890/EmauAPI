@@ -54,6 +54,6 @@ public class AZOpacity implements AZCommand{
         azPlayer.getPlayerMeta().setOpacity(opacity);
         azPlayer.getEntityMeta().setOpacity(opacity);
         azPlayer.updateMeta();
-        sender.sendMessage("§a[AZPlugin]§e changement de d'opacité effectué !");
+        sender.sendMessage("§a[§2AZPlugin§a]§f Changement de d'opacité effectué !");
     }
 }

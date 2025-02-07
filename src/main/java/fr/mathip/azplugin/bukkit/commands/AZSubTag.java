@@ -41,7 +41,7 @@ public class AZSubTag implements AZCommand{
         if (args[2].equalsIgnoreCase("reset")) {
             azPlayer.getPlayerMeta().setSubTag(new ImmutablePactifyTagMetadata(""));
             azPlayer.updateMeta();
-            sender.sendMessage("§a[AZPlugin]§e changement de tag effectué !");
+            sender.sendMessage("§a[§2AZPlugin§a]§f Changement de tag effectué !");
             return;
         }
         StringBuilder sb = new StringBuilder();
@@ -57,6 +57,6 @@ public class AZSubTag implements AZCommand{
         tagMetadata.setText(sb.toString());
         azPlayer.getPlayerMeta().setSubTag(tagMetadata);
         Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.getInstance(), azPlayer::updateMeta);
-        sender.sendMessage("§a[AZPlugin]§e changement de tag effectué !");
+        sender.sendMessage("§a[§2AZPlugin§a]§f changement de tag effectué !");
     }
 }

@@ -53,7 +53,7 @@ public class AZWorldEnv implements AZCommand{
         worldEnvPacket.setType(worldEnv.name());
 
         AZManager.sendPLSPMessage(target, worldEnvPacket);
-        sender.sendMessage("§achangement de d'environnement effectué !");
+        sender.sendMessage("§a[§2EmauWorldEnv] §fChangement de d'environnement effectué !");
 
     }
 }

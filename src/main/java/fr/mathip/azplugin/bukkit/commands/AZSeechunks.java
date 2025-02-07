@@ -1,5 +1,3 @@
-// Celui-ci fonctionne sous BungeeCord
-
 package fr.mathip.azplugin.bukkit.commands;
 
 import fr.mathip.azplugin.bukkit.AZPlugin;

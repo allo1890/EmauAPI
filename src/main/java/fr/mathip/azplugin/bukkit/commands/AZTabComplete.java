@@ -78,6 +78,25 @@ public class AZTabComplete implements TabCompleter {
                             completion.add("reset");
                         }
                         break;
+
+                    case "itemrender":
+                        if (args.length == 2) {
+                            completion.add("rarity");
+                            completion.add("taille");
+                        } else if (args.length == 3) {
+                            if (args[1].equalsIgnoreCase("rarity")) {
+                                completion.add("AUTO");
+                                completion.add("NONE");
+                                completion.add("UNCOMMON");
+                                completion.add("RARE");
+                                completion.add("EPIC");
+                                completion.add("LEGENDARY");
+                                completion.add("MYTHIC");
+                            } else {
+                                completion.add("#FF0000");
+                            }
+                        }
+                        break;
                 }
                 return completion.isEmpty() ? Collections.emptyList() : completion;
             }

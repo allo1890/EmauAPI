@@ -42,10 +42,10 @@ public class AZItemRender implements AZCommand {
 
                 if (args[1].equalsIgnoreCase("rarity")) {
                     nbti.mergeCompound(new NBTContainer("{PacRender:{Rarity:\"" + args[2] + "\"},PacDisplay:{Rarity:\"" + args[2] + "\"}}"));
-                    p.sendMessage("§aRareté définie sur : " + args[2]);
+                    p.sendMessage("§a[§2EmauRarity§a] §fRareté définie sur : " + args[2]);
                 } else {
                     nbti.mergeCompound(new NBTContainer("{PacRender: {Scale: " + Float.parseFloat(args[1]) + ", Color: " + AZColor.get0xAARRGGBB(args[2]) + "}, PacDisplay: {Color: " + AZColor.get0xAARRGGBB(args[2]) + "}}"));
-                    p.sendMessage("§aTaille et couleur mises à jour !");
+                    p.sendMessage("§a[§2EmauSizeColor§a] §fTaille et couleur mises à jour !");
                 }
 
                 p.getItemInHand().setItemMeta(nbti.getItem().getItemMeta());
@@ -60,7 +60,7 @@ public class AZItemRender implements AZCommand {
                     NBTItem nbti = new NBTItem(p.getItemInHand());
                     nbti.mergeCompound(new NBTContainer("{PacRender: {Scale: " + Float.parseFloat(args[1]) + "}}"));
                     p.getItemInHand().setItemMeta(nbti.getItem().getItemMeta());
-                    p.sendMessage("§aTaille mise à jour !");
+                    p.sendMessage("§a[§2EmauSize§a] §fTaille de l'item mise à jour !");
                 }
             } catch (NumberFormatException e) {
                 p.sendMessage("§cErreur : La valeur est invalide !");
@@ -68,7 +68,7 @@ public class AZItemRender implements AZCommand {
         } else {
             p.sendMessage("§c/az itemrender <taille> [couleur(Hex)]");
             p.sendMessage("§c/az itemrender rarity <nom_de_rareté>");
-            p.sendMessage("§fVous pouvez utiliser ce site pour faire des couleurs en Hexadécimal §ahttps://htmlcolorcodes.com/fr/");
+            p.sendMessage("§fVous pouvez utiliser ce site pour faire des couleurs en Hexadécimal §bhttps://htmlcolorcodes.com/fr/");
         }
     }
 }

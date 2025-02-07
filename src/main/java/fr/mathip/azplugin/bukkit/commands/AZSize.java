@@ -62,6 +62,6 @@ public class AZSize implements AZCommand{
         azPlayer.getPlayerMeta().setScale(scaleMetadata);
         azPlayer.getEntityMeta().setScale(scaleMetadata);
         Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.getInstance(), azPlayer::updateMeta);
-        sender.sendMessage("§a[AZPlugin]§e changement de taille effectué !");
+        sender.sendMessage("§a[§2AZPlugin§f]§f Changement de taille effectué !");
     }
 }

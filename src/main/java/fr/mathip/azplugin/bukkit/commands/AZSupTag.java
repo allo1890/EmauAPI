@@ -41,7 +41,7 @@ public class AZSupTag implements AZCommand{
         if (args[2].equalsIgnoreCase("reset")) {
             azPlayer.getPlayerMeta().setSupTag(new ImmutablePactifyTagMetadata(""));
             azPlayer.updateMeta();
-            sender.sendMessage("§a[AZPlugin]§e changement de tag effectué !");
+            sender.sendMessage("§a[§2EmauSubTag§a]§f Changement de subtag effectué !");
             return;
         }
         StringBuilder sb = new StringBuilder();

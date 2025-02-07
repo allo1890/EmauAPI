@@ -2,7 +2,6 @@ package fr.mathip.azplugin.bukkit.commands;
 
 import fr.mathip.azplugin.bukkit.AZPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,10 +37,10 @@ public class AZList implements AZCommand{
         }
         pactifyList.sort(String::compareToIgnoreCase);
         vanillaList.sort(String::compareToIgnoreCase);
-        sender.sendMessage(ChatColor.YELLOW + "Les joueurs qui utilisent le AZ launcher: " + (
-                pactifyList.isEmpty() ? (ChatColor.GRAY + "(Aucun)") : (ChatColor.GREEN + String.join(", ", pactifyList))));
-        sender.sendMessage(ChatColor.YELLOW + "Les joueurs qui n'utilisent pas le AZ launcher: " + (
-                vanillaList.isEmpty() ? (ChatColor.GRAY + "(Aucun)") : (ChatColor.RED + String.join(", ", vanillaList))));
+        sender.sendMessage("§fLes joueurs qui utilisent le AZ launcher: " + (
+                pactifyList.isEmpty() ? ("§7(Aucun)") : ("§a" + String.join(", ", pactifyList))));
+        sender.sendMessage("§fLes joueurs qui n'utilisent pas le AZ launcher: " + (
+                vanillaList.isEmpty() ? ("§7(Aucun)") : ("§c" + String.join(", ", vanillaList))));
 
     }
 }
