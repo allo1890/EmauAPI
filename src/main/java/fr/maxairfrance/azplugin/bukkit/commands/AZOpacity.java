@@ -39,8 +39,8 @@ public class AZOpacity implements AZCommand {
             return;
         }
 
-        if (opacity < 0 || opacity > 1) {
-            sender.sendMessage("§cErreur : L'opacité doit être comprise entre 0 (totalement opaque) et 1 (totalement transparent).");
+        if (opacity < -1 || opacity > 1) {
+            sender.sendMessage("§cErreur : L'opacité doit être comprise entre -1 (totalement opaque) et 1 (totalement transparent).");
             return;
         }
 
