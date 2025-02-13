@@ -46,7 +46,7 @@ public class AZVignette implements AZCommand {
             int green = Integer.parseInt(args[2]);
             int blue = Integer.parseInt(args[3]);
 
-            if (!isValidColor(red) || !isValidColor(green) || !isValidColor(blue)) {
+            if (isValidColor(red) || isValidColor(green) || isValidColor(blue)) {
                 sender.sendMessage("§a[§2EmauVignette§a]§f Les valeurs de couleur doivent être comprises entre 0 et 255 !");
                 return;
             }

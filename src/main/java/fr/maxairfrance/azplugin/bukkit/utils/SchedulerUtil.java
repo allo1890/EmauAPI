@@ -1,5 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.utils;
 
+import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collection;
@@ -23,8 +24,8 @@ public final class SchedulerUtil {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
-    private static class Task implements Runnable
-    {
+    @RequiredArgsConstructor
+    private static class Task implements Runnable {
         private final Collection<Integer> tasksCollection;
         private final Runnable handle;
         private int taskId;
@@ -40,11 +41,6 @@ public final class SchedulerUtil {
             if (this.taskId != -1) {
                 this.tasksCollection.add(this.taskId);
             }
-        }
-
-        public Task(final Collection<Integer> tasksCollection, final Runnable handle) {
-            this.tasksCollection = tasksCollection;
-            this.handle = handle;
         }
     }
 }

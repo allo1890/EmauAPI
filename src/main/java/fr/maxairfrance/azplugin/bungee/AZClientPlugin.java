@@ -12,6 +12,5 @@ public class AZClientPlugin extends Plugin {
 
     @Override
     public void onDisable() {
-
     }
 }

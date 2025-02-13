@@ -33,6 +33,7 @@ public final class AZPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        getServer().getPluginManager().registerEvents(new fr.maxairfrance.azplugin.bukkit.listener.AZSummonListener(), this);
         Metrics metrics = new Metrics(this, 21554);
         new ConfigManager(this);
         getServer().getPluginManager().registerEvents(new PacketWindow(this), this);

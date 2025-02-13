@@ -54,8 +54,6 @@ public class PacketPopup {
         okButton.setClickEvent(clickEvent);
 
         AZManager.sendPLSPMessage(player, popupPrompt);
-
-
     }
 
     public void send(Player player) {

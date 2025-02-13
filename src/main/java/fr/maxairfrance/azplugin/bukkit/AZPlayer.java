@@ -20,7 +20,6 @@ import pactify.client.api.plprotocol.model.cosmetic.PactifyCosmeticEquipment;
 import pactify.client.api.plprotocol.model.cosmetic.PactifyCosmeticEquipmentSlot;
 import pactify.client.api.plsp.packet.client.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +31,7 @@ public class AZPlayer {
     private static final Pattern AZ_HOSTNAME_PATTERN = Pattern.compile("[\u0000\u0002]PAC([0-9A-F]{5})[\u0000\u0002]");
     private final AZManager service;
     private final Player player;
-    private final Set<Integer> scheduledTasks = new HashSet();
+    private final Set<Integer> scheduledTasks = new HashSet<>();
     private boolean joined;
     private int launcherProtocolVersion;
     private final PLSPPacketPlayerMeta playerMeta;
@@ -62,15 +61,12 @@ public class AZPlayer {
         prefixText.setClickEvent(new AZChatComponent.ClickEvent("run_command", "/kit pvp"));
         prefixText.setHoverEvent(new AZChatComponent.HoverEvent("show_text", "§béquiper le kit pvp"));
         cosmeticEquipment.setTooltipPrefix(prefixText);
-        List<Integer> items = new ArrayList();
-        items.add(772);
-        items.add(768);
         PLSPPacketPlayerCosmeticEquipment packetCosmeticEquipment = new PLSPPacketPlayerCosmeticEquipment();
         packetCosmeticEquipment.setPlayerId(this.player.getUniqueId());
         packetCosmeticEquipment.setSlot(PactifyCosmeticEquipmentSlot.CUSTOM_1);
         packetCosmeticEquipment.setEquipment(cosmeticEquipment);
         Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.instance, () -> {
-            //
+            // Rien à mettre ici ou les packets sont mal envoyez.
             AZManager.sendPLSPMessage(this.player, packetCosmeticEquipment);
         });
         this.sendCustomItems();
