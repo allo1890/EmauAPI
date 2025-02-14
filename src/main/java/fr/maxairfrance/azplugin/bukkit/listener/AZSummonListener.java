@@ -2,7 +2,7 @@ package fr.maxairfrance.azplugin.bukkit.listener;
 
 import fr.maxairfrance.azplugin.bukkit.AZManager;
 import fr.maxairfrance.azplugin.bukkit.AZPlugin;
-import fr.maxairfrance.azplugin.bukkit.commands.AZSummon;  // Importer la classe AZSummon
+import fr.maxairfrance.azplugin.bukkit.commands.AZSummon;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.*;
