@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pactify.client.api.plprotocol.metadata.PactifyTagMetadata;
@@ -138,7 +139,7 @@ public class AZSummon implements AZCommand {
         }
     }
 
-    public static void summonSkeletonAt(Location location, int level) {
+    public static Entity summonSkeletonAt(Location location, int level) {
         Skeleton skeleton = (Skeleton) location.getWorld().spawnEntity(location, EntityType.SKELETON);
         applyLevelStats(skeleton, level);
 
@@ -150,8 +151,12 @@ public class AZSummon implements AZCommand {
         packetEntityMeta.setTag(tagMetadata);
 
         AZPlugin.getInstance().entitiesSize.put(skeleton, packetEntityMeta);
+
+        skeleton.setMetadata("summoned_by_lightning", new FixedMetadataValue(AZPlugin.getInstance(), true));
+
         for (Player player : location.getWorld().getPlayers()) {
             AZManager.sendPLSPMessage(player, packetEntityMeta);
         }
+        return null;
     }
 }
