@@ -73,7 +73,7 @@ public class AZSummon implements AZCommand {
         try {
             if (args.length > 6) {
                 level = Integer.parseInt(args[args.length - 1]);
-                if (level < 1 || level > 20) {
+                if (level < 1 || level > 15) {
                     sender.sendMessage("§cLe niveau doit être compris entre 1 et 20 !");
                     return;
                 }
@@ -92,16 +92,18 @@ public class AZSummon implements AZCommand {
             LivingEntity livingEntity = (LivingEntity) entity;
             applyLevelStats(livingEntity, level);
 
-            String tag = "§bMobs lvl [§7" + level + "§b] - §c" + (int) livingEntity.getHealth() + "§7/§c" + (int) livingEntity.getMaxHealth() + "§c HP";
+            String tag = "§cLv. " + level + " §f";
+            if (entity instanceof Skeleton) {
+                tag += "§aEsprit Cristallin §f" + (int) livingEntity.getHealth() + "\uEEEE♥";
+            } else if (entity instanceof Zombie) {
+                tag += "§aGuerrier §f" + (int) livingEntity.getHealth() + "\uEEEE♥";
+            } else if (entity instanceof Silverfish) {
+                tag += "§aInvocation §f" + (int) livingEntity.getHealth() + "\uEEEE♥";
+            }
 
             PactifyTagMetadata tagMetadata = new PactifyTagMetadata();
             tagMetadata.setText(tag);
             packetEntityMeta.setTag(tagMetadata);
-        }
-
-        if (entity instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) entity;
-            applyLevelStats(livingEntity, level);
         }
 
         AZPlugin.getInstance().entitiesSize.put(entity, packetEntityMeta);
@@ -112,7 +114,7 @@ public class AZSummon implements AZCommand {
         sender.sendMessage("§a[§2EmauSummon§a]§f Entité crée avec succès avec taille, tag et niveau !");
     }
 
-    private void applyLevelStats(LivingEntity entity, int level) {
+    public static void applyLevelStats(LivingEntity entity, int level) {
         double baseHealth = 20.0;
         double additionalHealth = 150.0 * (level - 1);
         double health = baseHealth + additionalHealth;
@@ -124,9 +126,10 @@ public class AZSummon implements AZCommand {
 
         if (entity.getType() == EntityType.SKELETON) {
             Skeleton skeleton = (Skeleton) entity;
-            ItemStack bow = new ItemStack(Material.BOW);
-            bow.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, Math.min(level * 2, 20));
-            skeleton.getEquipment().setItemInMainHand(bow);
+            ItemStack sword = new ItemStack(Material.IRON_SWORD);
+            sword.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, Math.min(level * 2, 20));
+            skeleton.getEquipment().setItemInMainHand(sword);
+            skeleton.getEquipment().setItemInOffHand(new ItemStack(Material.AIR));
         } else {
             int baseAttack = 5;
             int additionalAttack = level;
@@ -134,5 +137,21 @@ public class AZSummon implements AZCommand {
             entity.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, attackDamage - 1));
         }
     }
-}
 
+    public static void summonSkeletonAt(Location location, int level) {
+        Skeleton skeleton = (Skeleton) location.getWorld().spawnEntity(location, EntityType.SKELETON);
+        applyLevelStats(skeleton, level);
+
+        String tag = "§cLv. " + level + " §aEsprit Cristallin §f" + (int) skeleton.getHealth() + "\uEEEE♥";
+        PactifyTagMetadata tagMetadata = new PactifyTagMetadata();
+        tagMetadata.setText(tag);
+
+        PLSPPacketEntityMeta packetEntityMeta = new PLSPPacketEntityMeta(skeleton.getEntityId());
+        packetEntityMeta.setTag(tagMetadata);
+
+        AZPlugin.getInstance().entitiesSize.put(skeleton, packetEntityMeta);
+        for (Player player : location.getWorld().getPlayers()) {
+            AZManager.sendPLSPMessage(player, packetEntityMeta);
+        }
+    }
+}
