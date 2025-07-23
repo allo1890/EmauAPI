@@ -5,6 +5,7 @@ import pactify.client.api.mcprotocol.NotchianPacketBuffer;
 import pactify.client.api.mcprotocol.model.NotchianItemStack;
 
 public class AZItemStack implements NotchianItemStack {
+
     private final int id;
     private final byte amount;
     private final short damage;

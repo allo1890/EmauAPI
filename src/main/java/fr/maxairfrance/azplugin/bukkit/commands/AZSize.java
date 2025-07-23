@@ -7,7 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pactify.client.api.plprotocol.metadata.PactifyScaleMetadata;
 
-public class AZSize implements AZCommand{
+public class AZSize implements AZCommand {
+
     @Override
     public String name() {
         return "size";

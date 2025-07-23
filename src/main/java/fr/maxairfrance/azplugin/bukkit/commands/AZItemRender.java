@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AZItemRender implements AZCommand {
+
     @Override
     public String name() {
         return "itemrender";

@@ -8,7 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pactify.client.api.plprotocol.metadata.PactifyModelMetadata;
 
-public class AZModel implements AZCommand{
+public class AZModel implements AZCommand {
+
     @Override
     public String name() {
         return "model";

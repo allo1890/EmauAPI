@@ -18,10 +18,8 @@ import java.util.List;
 
 public final class AZPlugin extends JavaPlugin {
 
-    @Getter
-    static public AZPlugin instance;
-    @Getter
-    private static AZManager AZManager;
+    @Getter static public AZPlugin instance;
+    @Getter private static AZManager AZManager;
     public HashMap<Entity, PLSPPacketEntityMeta> entitiesSize;
     public List<Player> playersSeeChunks;
     private BukkitTask bukkitTask;

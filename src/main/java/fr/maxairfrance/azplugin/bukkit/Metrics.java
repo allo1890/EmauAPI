@@ -36,7 +36,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Metrics {
 
     private final Plugin plugin;
-
     private final MetricsBase metricsBase;
 
     /**

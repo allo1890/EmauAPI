@@ -13,9 +13,9 @@ import java.util.ArrayList;
 @Setter
 @Slf4j
 public class ConfigManager {
+
     private final AZPlugin main;
-    @Getter
-    private static ConfigManager instance;
+    @Getter private static ConfigManager instance;
     private boolean attackCooldown;
     private boolean playerPush;
     private boolean largeHitBox;

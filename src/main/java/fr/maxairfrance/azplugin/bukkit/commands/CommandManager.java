@@ -11,8 +11,7 @@ import java.util.*;
 public class CommandManager implements CommandExecutor {
 
     private final Map<Class<? extends AZCommand>, AZCommand> commands;
-    @Getter
-    private static CommandManager instance;
+    @Getter private static CommandManager instance;
     public CommandManager() {
         commands = new HashMap<>();
     }

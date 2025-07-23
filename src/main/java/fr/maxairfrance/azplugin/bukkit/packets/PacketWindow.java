@@ -20,6 +20,7 @@ import org.bukkit.inventory.Inventory;
 import java.util.*;
 
 public class PacketWindow implements Listener {
+
     private static final Map<UUID, Integer> windowId = new HashMap<>();
     public static final Set<UUID> customWindow = new HashSet<>();
 
@@ -142,6 +143,7 @@ public class PacketWindow implements Listener {
             remove(player);
         }
     }
+
     @EventHandler
     void OnInventoryOpen(InventoryOpenEvent e) {
         if (e.getPlayer() instanceof Player) {
@@ -157,7 +159,7 @@ public class PacketWindow implements Listener {
     public static void openInventory(Player player, Inventory inventory) {
         UUID uuid = player.getUniqueId();
         if (AZPlayer.hasAZLauncher(player)) {
-            customWindow.add(uuid);
+            customWindow.remove(uuid);
             player.openInventory(inventory);
         }
     }

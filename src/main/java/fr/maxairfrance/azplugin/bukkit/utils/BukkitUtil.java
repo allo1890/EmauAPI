@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class BukkitUtil {
+
     private static final Method PLAYER_ADDCHANNEL_METHOD;
     private static final Pattern SERVER_VERSION;
 

@@ -6,7 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class AZPopup implements AZCommand{
+public class AZPopup implements AZCommand {
+
     @Override
     public String name() {
         return "popup";

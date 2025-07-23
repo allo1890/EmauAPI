@@ -1,10 +1,12 @@
 package fr.maxairfrance.azplugin.bukkit.packets;
 
 import fr.maxairfrance.azplugin.bukkit.AZManager;
+import fr.maxairfrance.azplugin.bukkit.AZPlugin;
 import fr.maxairfrance.azplugin.bukkit.handlers.PopupType;
 import fr.maxairfrance.azplugin.bukkit.utils.AZChatComponent;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import pactify.client.api.plsp.model.SimplePLSPRegex;
 import pactify.client.api.plsp.packet.client.PLSPPacketPopupAlert;
@@ -13,30 +15,16 @@ import pactify.client.api.plsp.packet.client.PLSPPacketPopupPrompt;
 
 public class PacketPopup {
 
-    @Getter
-    private final String name;
-    @Getter
-    private final PopupType type;
-    @Getter
-    private final PLSPPacketPopupAlert popupAlert;
-    @Getter
-    private final PLSPPacketPopupConfirm popupConfirm;
-    @Getter
-    private final PLSPPacketPopupPrompt popupPrompt;
-    @Setter
-    @Getter
-    private AZChatComponent textComponent;
-    @Setter
-    @Getter
-    private AZChatComponent okComponent;
-    @Setter
-    @Getter
-    private AZChatComponent cancelComponent;
-    @Setter
-    private String defaultValue;
-    @Setter
-    @Getter
-    private boolean password;
+    @Getter private final String name;
+    @Getter private final PopupType type;
+    @Getter private final PLSPPacketPopupAlert popupAlert;
+    @Getter private final PLSPPacketPopupConfirm popupConfirm;
+    @Getter private final PLSPPacketPopupPrompt popupPrompt;
+    @Setter @Getter private AZChatComponent textComponent;
+    @Setter @Getter private AZChatComponent okComponent;
+    @Setter @Getter private AZChatComponent cancelComponent;
+    @Setter private String defaultValue;
+    @Setter @Getter private boolean password;
 
     public PacketPopup(String name, PopupType type) {
         this.name = name;
@@ -54,6 +42,18 @@ public class PacketPopup {
         okButton.setClickEvent(clickEvent);
 
         AZManager.sendPLSPMessage(player, popupPrompt);
+    }
+
+    public static void setAlert(Player player, TextComponent textComponent) {
+        PLSPPacketPopupAlert popupAlert = new PLSPPacketPopupAlert(new AZChatComponent(textComponent), new AZChatComponent("ok"));
+        AZPlugin.getAZManager();
+        AZManager.sendPLSPMessage(player, popupAlert);
+    }
+
+    public static void setAlert(Player player, String text) {
+        PLSPPacketPopupAlert popupAlert = new PLSPPacketPopupAlert(new AZChatComponent(text), new AZChatComponent("ok"));
+        AZPlugin.getAZManager();
+        AZManager.sendPLSPMessage(player, popupAlert);
     }
 
     public void send(Player player) {

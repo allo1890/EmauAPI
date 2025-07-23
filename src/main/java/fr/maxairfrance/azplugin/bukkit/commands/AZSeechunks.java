@@ -7,7 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class AZSeechunks implements AZCommand{
+public class AZSeechunks implements AZCommand {
+
     @Override
     public String name() {
         return "seechunks";

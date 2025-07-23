@@ -14,12 +14,10 @@ import java.util.List;
 
 @Getter
 public class AZChatComponent implements NotchianChatComponent {
-    @Setter
-    private String text;
-    @Setter
-    private ClickEvent clickEvent;
-    @Setter
-    private HoverEvent hoverEvent;
+
+    @Setter private String text;
+    @Setter private ClickEvent clickEvent;
+    @Setter private HoverEvent hoverEvent;
     private final List<AZChatComponent> extra;
 
     public AZChatComponent(String text) {
@@ -97,8 +95,7 @@ public class AZChatComponent implements NotchianChatComponent {
     @Setter
     public static class ClickEvent {
         private String action;
-        @Getter
-        private String value;
+        @Getter private String value;
         public ClickEvent(String action, String value) {
             this.action = action;
             this.value = value;
@@ -106,8 +103,7 @@ public class AZChatComponent implements NotchianChatComponent {
 
     }
 
-    @Setter
-    @Getter
+    @Setter @Getter
     public static class HoverEvent {
         private String action;
         private String value;

@@ -32,6 +32,11 @@
       <option name="url" value="https://repo.dmulloy2.net/repository/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="placeholderapi-repo" />
+      <option name="name" value="placeholderapi-repo" />
+      <option name="url" value="https://repo.minebench.de/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="pactifylauncherexamples-repo" />
       <option name="name" value="pactifylauncherexamples-repo" />
       <option name="url" value="https://raw.githubusercontent.com/PactifyLauncherExamples/maven-repository/master/" />

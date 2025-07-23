@@ -10,11 +10,10 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class AZUpdate {
+
     private final URL checkURL;
-    @Getter
-    private final String thisVersion;
-    @Getter
-    private String newVersion;
+    @Getter private final String thisVersion;
+    @Getter private String newVersion;
 
     public AZUpdate(AZPlugin main, Integer pluginId) {
         this.thisVersion = main.getPluginVersion();
@@ -29,9 +28,7 @@ public class AZUpdate {
         try {
             URLConnection con = this.checkURL.openConnection();
             this.newVersion = "v" + (new BufferedReader(new InputStreamReader(con.getInputStream()))).readLine();
-            if (compareVersion(this.thisVersion, this.newVersion) < 0)
-                return true;
-            return false;
+            return compareVersion(this.thisVersion, this.newVersion) < 0;
         }  catch (IOException e) {
             throw new RuntimeException(e);
         }

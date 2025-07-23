@@ -41,11 +41,6 @@ public class AZListener implements Listener {
                 });
             }
 
-            // Ceci permet au joueur qui ne sont pas sous AZ de ne pas être connecter sur le serveur. à utiliser avec un Proxy
-            if (!hasAZLauncher(player)) {
-                player.kickPlayer("§cVous devez utiliser le AZLauncher pour vous connecter ! Voici le site: §bhttps://www.az-launcher.nz/fr/");
-            }
-
         } else {
             if (config.getJoinWithoutAZCommands() != null) {
                 config.getJoinWithoutAZCommands().forEach(command -> {

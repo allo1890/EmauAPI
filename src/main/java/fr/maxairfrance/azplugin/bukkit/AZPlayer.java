@@ -20,14 +20,13 @@ import pactify.client.api.plprotocol.model.cosmetic.PactifyCosmeticEquipment;
 import pactify.client.api.plprotocol.model.cosmetic.PactifyCosmeticEquipmentSlot;
 import pactify.client.api.plsp.packet.client.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Getter
 public class AZPlayer {
+
     private static final Pattern AZ_HOSTNAME_PATTERN = Pattern.compile("[\u0000\u0002]PAC([0-9A-F]{5})[\u0000\u0002]");
     private final AZManager service;
     private final Player player;
@@ -65,8 +64,7 @@ public class AZPlayer {
         packetCosmeticEquipment.setPlayerId(this.player.getUniqueId());
         packetCosmeticEquipment.setSlot(PactifyCosmeticEquipmentSlot.CUSTOM_1);
         packetCosmeticEquipment.setEquipment(cosmeticEquipment);
-        Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.instance, () -> {
-            // Rien à mettre ici ou les packets sont mal envoyez.
+        Bukkit.getScheduler().runTask(AZPlugin.instance, () -> {
             AZManager.sendPLSPMessage(this.player, packetCosmeticEquipment);
         });
         this.sendCustomItems();
@@ -109,7 +107,7 @@ public class AZPlayer {
     }
 
     public boolean hasLauncher() {
-        return this.launcherProtocolVersion > 0;
+        return this.launcherProtocolVersion == 16;
     }
 
     public AZPlayer(AZManager service, Player player) {
@@ -194,7 +192,19 @@ public class AZPlayer {
     }
 
     public static boolean hasAZLauncher(Player player) {
-        return AZPlugin.getAZManager().getPlayer(player).hasLauncher();
+        AZManager azManager = AZPlugin.getAZManager();
+        if (azManager == null) {
+            Bukkit.getLogger().warning("AZManager is null.");
+            return false;
+        }
+
+        AZPlayer azPlayer = azManager.getPlayer(player);
+        if (azPlayer == null) {
+            Bukkit.getLogger().warning("AZPlayer is null for player: " + player.getName());
+            return false;
+        }
+
+        return azPlayer.hasLauncher();
     }
 
 

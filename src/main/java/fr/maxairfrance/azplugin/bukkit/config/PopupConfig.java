@@ -12,15 +12,11 @@ import java.io.File;
 import java.util.*;
 
 public class PopupConfig {
+
     private final File file;
-
     private AZPlugin main;
-
-    @Getter
-    private static PopupConfig instance;
-
-    @Getter
-    public List<PacketPopup> popups;
+    @Getter private static PopupConfig instance;
+    @Getter public List<PacketPopup> popups;
 
 
     public PopupConfig(AZPlugin main) {

@@ -8,7 +8,8 @@ import org.bukkit.entity.Player;
 import pactify.client.api.plprotocol.metadata.ImmutablePactifyTagMetadata;
 import pactify.client.api.plprotocol.metadata.PactifyTagMetadata;
 
-public class AZTag implements AZCommand{
+public class AZTag implements AZCommand {
+
     @Override
     public String name() {
         return "tag";

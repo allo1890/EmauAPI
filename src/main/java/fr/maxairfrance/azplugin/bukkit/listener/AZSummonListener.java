@@ -13,9 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import pactify.client.api.plprotocol.metadata.PactifyTagMetadata;
 import pactify.client.api.plsp.packet.client.PLSPPacketEntityMeta;
 
@@ -32,188 +31,127 @@ public class AZSummonListener implements Listener {
         if (!(event.getEntity() instanceof LivingEntity)) return;
 
         LivingEntity entity = (LivingEntity) event.getEntity();
-        if (!AZPlugin.getInstance().entitiesSize.containsKey(entity)) return;
-
-        if (entity.hasMetadata("summoned_by_lightning")) {
-            return;
-        }
-
-        if (entity.hasMetadata("summoned")) {
+        if (!AZPlugin.getInstance().entitiesSize.containsKey(entity) || entity.hasMetadata("summoned_by_lightning") || entity.hasMetadata("summoned")) {
             return;
         }
 
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) event;
-
             if (damageEvent.getDamager() instanceof Player) {
-                Player player = (Player) damageEvent.getDamager();
-                damageMap.putIfAbsent(player.getUniqueId(), new HashMap<>());
-                damageMap.get(player.getUniqueId()).put(entity, damageMap.get(player.getUniqueId()).getOrDefault(entity, 0.0) + event.getFinalDamage());
+                recordPlayerDamage((Player) damageEvent.getDamager(), entity, event.getFinalDamage());
             }
         }
 
-        double newHealth = Math.max(0, entity.getHealth() - event.getFinalDamage());
-        int maxHealth = (int) entity.getMaxHealth();
-        int level = getEntityLevel(entity);
+        updateEntityTag(entity, entity.getHealth() - event.getFinalDamage());
 
-        String newTag = "§cLv. " + level + " §f";
-        if (entity instanceof Skeleton) {
-            if (newHealth <= (double) maxHealth / 2) {
-                spawnLightningAround(entity);
-            }
-            newTag += "§aEsprit Cristallin §f" + (int) newHealth + "\uEEEE♥";
-        } else if (entity instanceof Zombie) {
-            newTag += "§aGuerrier §f" + (int) newHealth + "\uEEEE♥";
-        } else if (entity instanceof Silverfish) {
-            newTag += "§aInvocation §f" + (int) newHealth + "\uEEEE♥";
-        } else {
-            newTag += "§7HP " + (int) newHealth + "§7/§c" + maxHealth + "§c HP";
-        }
-
-        PactifyTagMetadata tagMetadata = new PactifyTagMetadata();
-        tagMetadata.setText(newTag);
-        PLSPPacketEntityMeta packetEntityMeta = AZPlugin.getInstance().entitiesSize.get(entity);
-        packetEntityMeta.setTag(tagMetadata);
-
-        for (Player player : entity.getWorld().getPlayers()) {
-            AZManager.sendPLSPMessage(player, packetEntityMeta);
-            startTagUpdater();
+        if (entity instanceof Skeleton && entity.getHealth() <= entity.getMaxHealth() / 2) {
+            spawnLightningAround(entity);
         }
     }
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (!(event.getEntity() instanceof LivingEntity)) return;
-
         LivingEntity entity = event.getEntity();
-        if (!AZPlugin.getInstance().entitiesSize.containsKey(entity)) return;
-
-        if (entity.hasMetadata("summoned_by_lightning")) {
+        if (!AZPlugin.getInstance().entitiesSize.containsKey(entity) || entity.hasMetadata("summoned_by_lightning")) {
             return;
         }
 
-        List<Map.Entry<UUID, Map<Entity, Double>>> sortedEntries = new ArrayList<>(damageMap.entrySet());
-        sortedEntries.sort((entry1, entry2) -> {
-            double damage1 = entry1.getValue().getOrDefault(entity, 0.0);
-            double damage2 = entry2.getValue().getOrDefault(entity, 0.0);
-            return Double.compare(damage2, damage1);
-        });
-
-        List<String> topPlayers = new ArrayList<>();
-        for (int i = 0; i < Math.min(10, sortedEntries.size()); i++) {
-            Map.Entry<UUID, Map<Entity, Double>> entry = sortedEntries.get(i);
-            Player player = Bukkit.getPlayer(entry.getKey());
-            if (player != null) {
-                double damage = entry.getValue().getOrDefault(entity, 0.0);
-                topPlayers.add(player.getName() + "§7 (" + (int) damage + " dégâts)");
-            }
-        }
-
-        String message = "§fTop 10 des joueurs ayant infligé le plus de dégâts:";
-        for (String topPlayer : topPlayers) {
-            message += "\n§b" + topPlayer;
-        }
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(message);
-        }
-
-        Player bestPlayer = null;
-        double maxDamage = 0.0;
-        for (Map.Entry<UUID, Map<Entity, Double>> entry : damageMap.entrySet()) {
-            Map<Entity, Double> playerDamageMap = entry.getValue();
-            if (playerDamageMap.containsKey(entity)) {
-                double damage = playerDamageMap.get(entity);
-                if (damage > maxDamage) {
-                    maxDamage = damage;
-                    bestPlayer = Bukkit.getPlayer(entry.getKey());
-                }
-            }
-        }
-
-        if (bestPlayer != null) {
-            int emeralds = random.nextInt(7) + 2;
-            bestPlayer.getInventory().addItem(new ItemStack(Material.EMERALD, emeralds));
-            bestPlayer.sendMessage("§fVous avez reçu §a" + emeralds + "§f émeraudes pour avoir infligé le plus de dégâts !");
-        }
+        List<Map.Entry<UUID, Double>> sortedEntries = getSortedPlayerDamage(entity);
+        announceTopDamage(sortedEntries);
+        rewardBestPlayer(sortedEntries, entity);
         damageMap.clear();
     }
 
-    private void startTagUpdater() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Entity entity : AZPlugin.getInstance().entitiesSize.keySet()) {
-                    if (entity instanceof LivingEntity) {
-                        LivingEntity livingEntity = (LivingEntity) entity;
-
-                        if (!AZPlugin.getInstance().entitiesSize.containsKey(entity)) continue;
-
-                        int level = getEntityLevel(livingEntity);
-                        String newTag = "§cLv. " + level + " §f";
-                        double newHealth = livingEntity.getHealth();
-                        int maxHealth = (int) livingEntity.getMaxHealth();
-
-                        if (livingEntity instanceof Skeleton) {
-                            newTag += "§aEsprit Cristallin §f" + (int) newHealth + "\uEEEE♥";
-                        } else if (livingEntity instanceof Zombie) {
-                            newTag += "§aGuerrier §f" + (int) newHealth + "\uEEEE♥";
-                        } else if (livingEntity instanceof Silverfish) {
-                            newTag += "§aInvocation §f" + (int) newHealth + "\uEEEE♥";
-                        } else {
-                            newTag += "§7HP " + (int) newHealth + "§7/§c" + maxHealth + "§c HP";
-                        }
-
-                        PactifyTagMetadata tagMetadata = new PactifyTagMetadata();
-                        tagMetadata.setText(newTag);
-                        PLSPPacketEntityMeta packetEntityMeta = AZPlugin.getInstance().entitiesSize.get(entity);
-                        packetEntityMeta.setTag(tagMetadata);
-
-                        for (Player player : livingEntity.getWorld().getPlayers()) {
-                            AZManager.sendPLSPMessage(player, packetEntityMeta);
-                        }
-                    }
-                }
-            }
-        }.runTaskTimerAsynchronously(AZPlugin.getInstance(), 0L, 20L);
+    private void recordPlayerDamage(Player player, LivingEntity entity, double damage) {
+        damageMap.putIfAbsent(player.getUniqueId(), new HashMap<>());
+        damageMap.get(player.getUniqueId()).merge(entity, damage, Double::sum);
     }
 
-    private void spawnLightningAround(Entity entity) {
-        if (!(entity instanceof LivingEntity)) return;
+    private List<Map.Entry<UUID, Double>> getSortedPlayerDamage(LivingEntity entity) {
+        List<Map.Entry<UUID, Double>> sortedEntries = new ArrayList<>();
 
-        if (processedEntities.contains(entity)) return;
+        for (Map.Entry<UUID, Map<Entity, Double>> entry : damageMap.entrySet()) {
+            double damage = entry.getValue().getOrDefault(entity, 0.0);
+            if (damage > 0) sortedEntries.add(new AbstractMap.SimpleEntry<>(entry.getKey(), damage));
+        }
 
-        World world = entity.getWorld();
-        Location location = entity.getLocation();
-        int radius = random.nextInt(7) + 2;
+        sortedEntries.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
+        return sortedEntries;
+    }
 
-        processedEntities.add(entity);
-
-        for (int i = 0; i < 3; i++) {
-            double x = location.getX() + (random.nextDouble() * 2 - 1) * radius;
-            double y = location.getY();
-            double z = location.getZ() + (random.nextDouble() * 2 - 1) * radius;
-
-            Location lightningLocation = new Location(world, x, y, z);
-            world.strikeLightningEffect(lightningLocation);
-
-            Entity skeleton = AZSummon.summonSkeletonAt(lightningLocation, 5);
-
-            if (skeleton instanceof Skeleton) {
-                skeleton.setMetadata("summoned_by_lightning", new FixedMetadataValue(AZPlugin.getInstance(), true));
+    private void announceTopDamage(List<Map.Entry<UUID, Double>> sortedEntries) {
+        StringBuilder message = new StringBuilder("§fTop 10 des joueurs ayant infligé le plus de dégâts:");
+        for (int i = 0; i < Math.min(10, sortedEntries.size()); i++) {
+            Player player = Bukkit.getPlayer(sortedEntries.get(i).getKey());
+            if (player != null) {
+                message.append("\n§b").append(player.getName()).append("§7 (").append(sortedEntries.get(i).getValue().intValue()).append(" dégâts)");
             }
         }
+        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(message.toString()));
+    }
+
+    private void rewardBestPlayer(List<Map.Entry<UUID, Double>> sortedEntries, LivingEntity entity) {
+        if (!sortedEntries.isEmpty()) {
+            Player bestPlayer = Bukkit.getPlayer(sortedEntries.get(0).getKey());
+            if (bestPlayer != null) {
+                int emeralds = random.nextInt(7) + 2;
+                bestPlayer.getInventory().addItem(new ItemStack(Material.EMERALD, emeralds));
+                bestPlayer.sendMessage("§fVous avez reçu §a" + emeralds + "§f émeraudes pour avoir infligé le plus de dégâts !");
+            }
+        }
+    }
+
+    private void updateEntityTag(LivingEntity entity, double newHealth) {
+        newHealth = Math.max(0, newHealth);
+        int maxHealth = (int) entity.getMaxHealth();
+        int level = getEntityLevel(entity);
+
+        String newTag = "§cLv. " + level + " §f" + getEntityDisplayName(entity, (int) newHealth, maxHealth);
+        PactifyTagMetadata tagMetadata = new PactifyTagMetadata();
+        tagMetadata.setText(newTag);
+
+        PLSPPacketEntityMeta packetEntityMeta = AZPlugin.getInstance().entitiesSize.get(entity);
+        packetEntityMeta.setTag(tagMetadata);
+
+        entity.getWorld().getPlayers().forEach(player -> AZManager.sendPLSPMessage(player, packetEntityMeta));
+    }
+
+    private String getEntityDisplayName(LivingEntity entity, int newHealth, int maxHealth) {
+        if (entity instanceof Skeleton) return "§aEsprit Cristallin §f" + newHealth + "\uEEEE♥";
+        if (entity instanceof Zombie) return "§aGuerrier §f" + newHealth + "\uEEEE♥";
+        if (entity instanceof Silverfish) return "§aInvocation §f" + newHealth + "\uEEEE♥";
+        return "§7HP " + newHealth + "§7/§c" + maxHealth + "§c HP";
     }
 
     private int getEntityLevel(LivingEntity entity) {
         String tag = AZPlugin.getInstance().entitiesSize.get(entity).getTag().getText();
         try {
-            String[] parts = tag.split("§cLv. ");
-            if (parts.length > 1) {
-                return Integer.parseInt(parts[1].split(" ")[0]);
-            }
+            return Integer.parseInt(tag.split("§cLv. ")[1].split(" ")[0]);
         } catch (Exception e) {
             return 1;
         }
-        return 1;
+    }
+
+    private void spawnLightningAround(Entity entity) {
+        if (!(entity instanceof LivingEntity) || processedEntities.contains(entity)) return;
+
+        World world = entity.getWorld();
+        Location location = entity.getLocation();
+        int radius = random.nextInt(7) + 2;
+        processedEntities.add(entity);
+
+        for (int i = 0; i < 3; i++) {
+            Location lightningLocation = location.clone().add((random.nextDouble() * 2 - 1) * radius, 0, (random.nextDouble() * 2 - 1) * radius);
+            world.strikeLightningEffect(lightningLocation);
+
+            summonAndMarkEntity(AZSummon.summonSkeletonAt(lightningLocation, 5), "summoned_by_lightning");
+            summonAndMarkEntity(AZSummon.summonSilverFishAt(lightningLocation, 1), "summoned_by_lightning");
+        }
+    }
+
+    private void summonAndMarkEntity(Entity entity, String metadata) {
+        if (entity != null) {
+            entity.setMetadata(metadata, new FixedMetadataValue(AZPlugin.getInstance(), true));
+        }
     }
 }

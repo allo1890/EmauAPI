@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import pactify.client.api.plsp.packet.client.PLSPPacketVignette;
 
 public class PacketVignette {
+
     public PacketVignette() {
     }
 

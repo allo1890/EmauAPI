@@ -8,7 +8,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AZList implements AZCommand{
+public class AZList implements AZCommand {
+
     @Override
     public String name() {
         return "list";

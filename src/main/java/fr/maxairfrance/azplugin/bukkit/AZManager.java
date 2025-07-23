@@ -25,8 +25,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class AZManager implements Listener, Closeable {
-    @Getter
-    private final Plugin plugin;
+
+    @Getter private final Plugin plugin;
     private final Map<UUID, AZPlayer> players;
 
     public AZManager(final Plugin plugin) {
