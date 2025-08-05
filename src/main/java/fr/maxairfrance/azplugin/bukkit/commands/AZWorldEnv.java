@@ -1,7 +1,7 @@
 package fr.maxairfrance.azplugin.bukkit.commands;
 
 import fr.maxairfrance.azplugin.bukkit.AZManager;
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.handlers.PLSPWorldEnv;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -55,7 +55,7 @@ public class AZWorldEnv implements AZCommand {
             target = (Player) sender;
         }
 
-        AZPlugin.getAZManager().getPlayer(target);
+        EmauAPI.getAZManager().getPlayer(target);
 
         PLSPPacketWorldEnv worldEnvPacket = new PLSPPacketWorldEnv();
         worldEnvPacket.setName(target.getWorld().getName());

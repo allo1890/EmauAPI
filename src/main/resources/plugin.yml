@@ -1,6 +1,6 @@
-name: AZPlugin
+name: EmauAPI
 version: '${project.version}'
-main: fr.maxairfrance.azplugin.bukkit.AZPlugin
+main: fr.maxairfrance.azplugin.bukkit.EmauAPI
 author: MaxAirFrance
 softdepend: [Protocolib]
 commands:

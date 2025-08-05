@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public final class AZPlugin extends JavaPlugin {
+public final class EmauAPI extends JavaPlugin {
 
-    @Getter static public AZPlugin instance;
+    @Getter static public EmauAPI instance;
     @Getter private static AZManager AZManager;
     public HashMap<Entity, PLSPPacketEntityMeta> entitiesSize;
     public List<Player> playersSeeChunks;
@@ -43,11 +43,6 @@ public final class AZPlugin extends JavaPlugin {
         entitiesSize = new HashMap<>();
         playersSeeChunks = new ArrayList<>();
         setCommands();
-        isUpdate = new AZUpdate(this, 115548).checkForUpdate();
-        if (isUpdate) {
-            getLogger().info("Une nouvelle version du plugin a été détecté !");
-            getLogger().info("Il est recommendé de le mettre à jour ici: https://www.spigotmc.org/resources/azplugin.115548/");
-        }
     }
 
     private void setCommands() {

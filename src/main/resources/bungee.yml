@@ -1,4 +1,4 @@
-name: AZPlugin
+name: EmauAPI
 version: '${project.version}'
 description: A plugin to integrate the AZ Launcher.
 main: fr.maxairfrance.azplugin.bungee.AZClientPlugin

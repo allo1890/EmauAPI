@@ -1,7 +1,7 @@
 package fr.maxairfrance.azplugin.bukkit.packets;
 
 import fr.maxairfrance.azplugin.bukkit.AZManager;
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.handlers.PopupType;
 import fr.maxairfrance.azplugin.bukkit.utils.AZChatComponent;
 import lombok.Getter;
@@ -46,13 +46,13 @@ public class PacketPopup {
 
     public static void setAlert(Player player, TextComponent textComponent) {
         PLSPPacketPopupAlert popupAlert = new PLSPPacketPopupAlert(new AZChatComponent(textComponent), new AZChatComponent("ok"));
-        AZPlugin.getAZManager();
+        EmauAPI.getAZManager();
         AZManager.sendPLSPMessage(player, popupAlert);
     }
 
     public static void setAlert(Player player, String text) {
         PLSPPacketPopupAlert popupAlert = new PLSPPacketPopupAlert(new AZChatComponent(text), new AZChatComponent("ok"));
-        AZPlugin.getAZManager();
+        EmauAPI.getAZManager();
         AZManager.sendPLSPMessage(player, popupAlert);
     }
 

@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.commands;
 
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.AZPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -38,7 +38,7 @@ public class AZSupTag implements AZCommand {
             sender.sendMessage("§cUsage: /az suptag <joueur> <tag>");
             return;
         }
-        AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer(target);
+        AZPlayer azPlayer = EmauAPI.getAZManager().getPlayer(target);
         if (args[2].equalsIgnoreCase("reset")) {
             azPlayer.getPlayerMeta().setSupTag(new ImmutablePactifyTagMetadata(""));
             azPlayer.updateMeta();
@@ -57,7 +57,7 @@ public class AZSupTag implements AZCommand {
         PactifyTagMetadata tagMetadata = new PactifyTagMetadata();
         tagMetadata.setText(sb.toString());
         azPlayer.getPlayerMeta().setSupTag(tagMetadata);
-        Bukkit.getScheduler().runTaskLater(AZPlugin.getInstance(), azPlayer::updateMeta, 1);
+        Bukkit.getScheduler().runTaskLater(EmauAPI.getInstance(), azPlayer::updateMeta, 1);
         sender.sendMessage("§a[§2EmauSubTag§a]§f Changement de subtag pour le joueur §b" + target.getName() + "§f effectué !");
     }
 }

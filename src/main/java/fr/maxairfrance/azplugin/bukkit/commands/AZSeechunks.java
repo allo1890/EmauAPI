@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.commands;
 
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.handlers.PLSPConfFlag;
 import fr.maxairfrance.azplugin.bukkit.packets.PacketConf;
 import org.bukkit.Bukkit;
@@ -39,12 +39,12 @@ public class AZSeechunks implements AZCommand {
                     }
                     return;
                 }
-                if (AZPlugin.getInstance().playersSeeChunks.contains(target)) {
+                if (EmauAPI.getInstance().playersSeeChunks.contains(target)) {
                     PacketConf.setFlag(target, PLSPConfFlag.SEE_CHUNKS, false);
-                    AZPlugin.getInstance().playersSeeChunks.remove(target);
+                    EmauAPI.getInstance().playersSeeChunks.remove(target);
                 } else {
                     PacketConf.setFlag(target, PLSPConfFlag.SEE_CHUNKS, true);
-                    AZPlugin.getInstance().playersSeeChunks.add(target);
+                    EmauAPI.getInstance().playersSeeChunks.add(target);
                 }
 
             } else {

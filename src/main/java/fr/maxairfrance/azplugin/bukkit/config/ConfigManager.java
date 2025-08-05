@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.config;
 
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.packets.PacketUiComponent;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @Slf4j
 public class ConfigManager {
 
-    private final AZPlugin main;
+    private final EmauAPI main;
     @Getter private static ConfigManager instance;
     private boolean attackCooldown;
     private boolean playerPush;
@@ -38,7 +38,7 @@ public class ConfigManager {
     private ArrayList<String> specialInventoryCharacters = new ArrayList<>();
     private ArrayList<PacketUiComponent> UIComponents = new ArrayList<>();
 
-    public ConfigManager(AZPlugin main) {
+    public ConfigManager(EmauAPI main) {
         this.main = main;
         instance = this;
         initConfig();
@@ -68,7 +68,7 @@ public class ConfigManager {
         maxBuildHeight = main.getConfig().getInt("max_build_height");
 
         specialInventoryCharacters = (ArrayList<String>) main.getConfig().get("special-transparent-inventory-character");
-        new PopupConfig(AZPlugin.getInstance());
+        new PopupConfig(EmauAPI.getInstance());
 
         UIComponents = new ArrayList<>();
         ConfigurationSection cs = main.getConfig().getConfigurationSection("ui-buttons");

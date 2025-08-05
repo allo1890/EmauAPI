@@ -54,24 +54,29 @@ public class AZPlayer {
     public void join() {
         this.joined = true;
         AZManager.sendPLSPMessage(this.player, new PLSPPacketReset());
-        AZItemStack azItemStack = new AZItemStack(new ItemStack(Material.DIRT));
-        PactifyCosmeticEquipment cosmeticEquipment = new PactifyCosmeticEquipment(azItemStack);
-        AZChatComponent prefixText = new AZChatComponent("§bKit ");
-        prefixText.setClickEvent(new AZChatComponent.ClickEvent("run_command", "/kit pvp"));
-        prefixText.setHoverEvent(new AZChatComponent.HoverEvent("show_text", "§béquiper le kit pvp"));
-        cosmeticEquipment.setTooltipPrefix(prefixText);
-        PLSPPacketPlayerCosmeticEquipment packetCosmeticEquipment = new PLSPPacketPlayerCosmeticEquipment();
-        packetCosmeticEquipment.setPlayerId(this.player.getUniqueId());
-        packetCosmeticEquipment.setSlot(PactifyCosmeticEquipmentSlot.CUSTOM_1);
-        packetCosmeticEquipment.setEquipment(cosmeticEquipment);
-        Bukkit.getScheduler().runTask(AZPlugin.instance, () -> {
-            AZManager.sendPLSPMessage(this.player, packetCosmeticEquipment);
-        });
+
+            AZItemStack azItemStack = new AZItemStack(new ItemStack(Material.DIRT));
+            PactifyCosmeticEquipment cosmeticEquipment = new PactifyCosmeticEquipment(azItemStack);
+            AZChatComponent prefixText = new AZChatComponent("§bKit ");
+            prefixText.setClickEvent(new AZChatComponent.ClickEvent("run_command", "/kit pvp"));
+            prefixText.setHoverEvent(new AZChatComponent.HoverEvent("show_text", "§béquiper le kit pvp"));
+            cosmeticEquipment.setTooltipPrefix(prefixText);
+
+            PLSPPacketPlayerCosmeticEquipment packetCosmeticEquipment = new PLSPPacketPlayerCosmeticEquipment();
+            packetCosmeticEquipment.setPlayerId(this.player.getUniqueId());
+            packetCosmeticEquipment.setSlot(PactifyCosmeticEquipmentSlot.CUSTOM_1);
+            packetCosmeticEquipment.setEquipment(cosmeticEquipment);
+
+            Bukkit.getScheduler().runTask(EmauAPI.instance, () -> {
+                AZManager.sendPLSPMessage(this.player, packetCosmeticEquipment);
+            });
+
+
         this.sendCustomItems();
     }
 
     public void free() {
-        SchedulerUtil.cancelTasks(AZPlugin.getInstance(), this.scheduledTasks);
+        SchedulerUtil.cancelTasks(EmauAPI.getInstance(), this.scheduledTasks);
     }
 
     public void loadFlags() {
@@ -116,7 +121,7 @@ public class AZPlayer {
         this.playerMeta = new PLSPPacketPlayerMeta(player.getUniqueId());
         this.entityMeta = new PLSPPacketEntityMeta(player.getEntityId());
         this.playerMeta.setModel(new PactifyModelMetadata(-1));
-        Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.getInstance(), this::loadFlags);
+        Bukkit.getScheduler().runTaskAsynchronously(EmauAPI.getInstance(), this::loadFlags);
     }
 
     @Override
@@ -192,7 +197,7 @@ public class AZPlayer {
     }
 
     public static boolean hasAZLauncher(Player player) {
-        AZManager azManager = AZPlugin.getAZManager();
+        AZManager azManager = EmauAPI.getAZManager();
         if (azManager == null) {
             Bukkit.getLogger().warning("AZManager is null.");
             return false;

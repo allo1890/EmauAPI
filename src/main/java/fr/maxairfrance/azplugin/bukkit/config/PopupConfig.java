@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.config;
 
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.handlers.PopupType;
 import fr.maxairfrance.azplugin.bukkit.packets.PacketPopup;
 import fr.maxairfrance.azplugin.bukkit.utils.AZChatComponent;
@@ -14,12 +14,12 @@ import java.util.*;
 public class PopupConfig {
 
     private final File file;
-    private AZPlugin main;
+    private EmauAPI main;
     @Getter private static PopupConfig instance;
     @Getter public List<PacketPopup> popups;
 
 
-    public PopupConfig(AZPlugin main) {
+    public PopupConfig(EmauAPI main) {
         this.main = main;
         instance = this;
         file = new File(main.getDataFolder(), "popups.yml");

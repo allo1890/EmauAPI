@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.packets;
 
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.AZManager;
 import org.bukkit.entity.Player;
 import pactify.client.api.plsp.packet.client.PLSPPacketVignette;
@@ -14,12 +14,12 @@ public class PacketVignette {
         float redFloat = (float)red / 255.0F;
         float greenFloat = (float)green / 255.0F;
         float blueFloat = (float)blue / 255.0F;
-        AZPlugin.getAZManager();
+        EmauAPI.getAZManager();
         AZManager.sendPLSPMessage(player, new PLSPPacketVignette(true, redFloat, greenFloat, blueFloat));
     }
 
     public static void resetVignette(Player player) {
-        AZPlugin.getAZManager();
+        EmauAPI.getAZManager();
         AZManager.sendPLSPMessage(player, new PLSPPacketVignette(false, 0.0F, 0.0F, 0.0F));
     }
 }

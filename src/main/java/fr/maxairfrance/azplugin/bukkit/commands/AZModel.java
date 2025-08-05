@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.commands;
 
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.AZPlayer;
 import fr.maxairfrance.azplugin.bukkit.handlers.PLSPPlayerModel;
 import org.bukkit.Bukkit;
@@ -45,7 +45,7 @@ public class AZModel implements AZCommand {
                 return;
             }
         }
-        AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer(target);
+        AZPlayer azPlayer = EmauAPI.getAZManager().getPlayer(target);
         if (args[1].equalsIgnoreCase("reset")){
             azPlayer.getPlayerMeta().setModel(new PactifyModelMetadata(-1));
             azPlayer.getEntityMeta().setModel(new PactifyModelMetadata(-1));
@@ -60,7 +60,7 @@ public class AZModel implements AZCommand {
             modelMetadata.setId(plspPlayerModel.getId());
             azPlayer.getPlayerMeta().setModel(modelMetadata);
             azPlayer.getEntityMeta().setModel(modelMetadata);
-            Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.getInstance(), azPlayer::updateMeta);
+            Bukkit.getScheduler().runTaskAsynchronously(EmauAPI.getInstance(), azPlayer::updateMeta);
             sender.sendMessage("§a[§2EmauModel§a]§f Changement de model pour le joueur §b" + target.getName() + " §feffectué !");
         } catch (IllegalArgumentException e){
             sender.sendMessage("§cErreur : La valeur est invalide !.");

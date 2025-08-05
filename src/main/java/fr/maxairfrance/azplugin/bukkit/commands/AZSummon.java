@@ -1,7 +1,7 @@
 package fr.maxairfrance.azplugin.bukkit.commands;
 
 import fr.maxairfrance.azplugin.bukkit.AZManager;
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.handlers.PLSPPlayerModel;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -81,7 +81,7 @@ public class AZSummon implements AZCommand {
             packetEntityMeta.setTag(generateTag(livingEntity, level));
         }
 
-        AZPlugin.getInstance().entitiesSize.put(entity, packetEntityMeta);
+        EmauAPI.getInstance().entitiesSize.put(entity, packetEntityMeta);
         location.getWorld().getPlayers().forEach(p -> AZManager.sendPLSPMessage(p, packetEntityMeta));
 
         sender.sendMessage("§a[§2EmauSummon§a]§f Entité invoquée avec succès !");
@@ -161,9 +161,9 @@ public class AZSummon implements AZCommand {
         PLSPPacketEntityMeta packetEntityMeta = new PLSPPacketEntityMeta(skeleton.getEntityId());
         packetEntityMeta.setTag(tagMetadata);
 
-        AZPlugin.getInstance().entitiesSize.put(skeleton, packetEntityMeta);
+        EmauAPI.getInstance().entitiesSize.put(skeleton, packetEntityMeta);
 
-        skeleton.setMetadata("summoned_by_lightning", new FixedMetadataValue(AZPlugin.getInstance(), true));
+        skeleton.setMetadata("summoned_by_lightning", new FixedMetadataValue(EmauAPI.getInstance(), true));
 
         for (Player player : location.getWorld().getPlayers()) {
             AZManager.sendPLSPMessage(player, packetEntityMeta);
@@ -181,9 +181,9 @@ public class AZSummon implements AZCommand {
         PLSPPacketEntityMeta packetEntityMeta = new PLSPPacketEntityMeta(silverfish.getEntityId());
         packetEntityMeta.setTag(tagMetadata);
 
-        AZPlugin.getInstance().entitiesSize.put(silverfish, packetEntityMeta);
+        EmauAPI.getInstance().entitiesSize.put(silverfish, packetEntityMeta);
 
-        silverfish.setMetadata("summoned_by_lightning", new FixedMetadataValue(AZPlugin.getInstance(), true));
+        silverfish.setMetadata("summoned_by_lightning", new FixedMetadataValue(EmauAPI.getInstance(), true));
 
         for (Player player : location.getWorld().getPlayers()) {
             AZManager.sendPLSPMessage(player, packetEntityMeta);

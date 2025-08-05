@@ -79,9 +79,9 @@ public class AZManager implements Listener, Closeable {
             PLSPProtocol.PacketData<?> packetData = PLSPProtocol.getClientPacketByClass(message.getClass());
             NotchianPacketUtil.writeString(buf, packetData.getId(), 32767);
             message.write(buf);
-            player.sendPluginMessage(AZPlugin.getInstance(), "PLSP", buf.toBytes());
+            player.sendPluginMessage(EmauAPI.getInstance(), "PLSP", buf.toBytes());
         } catch (Exception e) {
-            AZPlugin.getInstance().getLogger().log(Level.WARNING, "Exception sending PLSP message to " + ((player != null) ? player.getName() : "null") + ":", e);
+            EmauAPI.getInstance().getLogger().log(Level.WARNING, "Exception sending PLSP message to " + ((player != null) ? player.getName() : "null") + ":", e);
         }
     }
 

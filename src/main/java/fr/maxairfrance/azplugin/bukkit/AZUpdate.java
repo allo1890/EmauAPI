@@ -15,7 +15,7 @@ public class AZUpdate {
     @Getter private final String thisVersion;
     @Getter private String newVersion;
 
-    public AZUpdate(AZPlugin main, Integer pluginId) {
+    public AZUpdate(EmauAPI main, Integer pluginId) {
         this.thisVersion = main.getPluginVersion();
         try {
             this.checkURL = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + pluginId);

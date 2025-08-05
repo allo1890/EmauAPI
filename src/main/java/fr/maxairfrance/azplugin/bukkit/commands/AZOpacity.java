@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.commands;
 
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.AZPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -59,7 +59,7 @@ public class AZOpacity implements AZCommand {
             target = (Player) sender;
         }
 
-        AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer(target);
+        AZPlayer azPlayer = EmauAPI.getAZManager().getPlayer(target);
         azPlayer.getPlayerMeta().setOpacity(opacity);
         azPlayer.getEntityMeta().setOpacity(opacity);
         azPlayer.updateMeta();

@@ -1,16 +1,16 @@
-update-message: true
+update-message: false
 
 join-with-az-commands:
-  #- "give %player% golden_apple"
-  #- "tellraw %player% §6Hey ! Vous utilisez le AZ Launcher"
+#- "give %player% golden_apple"
+#- "tellraw %player% §6Hey ! Vous utilisez le AZ Launcher"
 
 join-without-az-commands:
-  #- "give %player% dirt"
+#- "give %player% dirt"
 
 
 attack_cooldown: false  #Activer/Désactiver le cooldown des attaques.
 player_push: false #Activer/Désactiver le fait que les joueurs se poussent entre eux.
-large_hitbox: false #Activer/Désactiver les hitboxs larges (comme en 1.8).
+large_hitbox: true #Activer/Désactiver les hitboxs larges (comme en 1.8).
 sword_blocking: true #Activer/Désactiver la parade avec l'épée (pour que ça fonctionne sur un serveur 1.9 il faudra modifier son code).
 hit_and_block: true #Activer/Désactiver le hit-and-block.
 old_enchantments: true #Activer/Désactiver l'ancienne interface d'enchantement (comme en 1.8).
@@ -18,7 +18,7 @@ pvp_hit_priority: true #Activer/Désactiver le fait de donner la priorité au PV
 see_chunks: false #Activer/Désactiver la vision des chunks (le chunk actuel est plus brillant).
 sidebar_scores: false #Activer/Désactiver les scores dans la sidebar du scoreboard (les nombres en rouge).
 smooth_experience_bar: true #Activer/Désactiver l'animation lissée de la barre d'expérience.
-sort_tab_list_by_names: true #Activer/Désactiver le trie de la tab-list en fonction du display-name des joueurs.
+sort_tab_list_by_names: false #Activer/Désactiver le trie de la tab-list en fonction du display-name des joueurs.
 server_side_anvil: false
 pistons_retract_entities: false
 hit_indicator: false
@@ -33,10 +33,10 @@ special-transparent-inventory-character:
 #Les UI boutons sont des boutons qui peuvent être dans l'inventaire ou dans le menu des paramètres
 ui-buttons:
   gamemenu_achievements:
-    enable: false
-    text: "Boutton spécial..."
-    hover-text: "Click ici %player% :)"
-    command: "/kill %player%"
+    enable: true
+    text: "Menu Emauzium"
+    hover-text: ""
+    command: "/emauzium"
   gamemenu_statistics:
     enable: false
     text: ""
@@ -49,36 +49,36 @@ ui-buttons:
     command: ""
   playerinv_btn1:
     enable: true
-    text: "Faction"
-    hover-text: "\xe2\x9e\xa1\xef\xb8\x8f /f"
+    text: "§2Faction"
+    hover-text: "➡ /f"
     command: "/f"
   playerinv_btn2:
-    enable: false
-    text: ""
-    hover-text: ""
-    command: ""
+    enable: true
+    text: "§2Banques"
+    hover-text: "➡ §9/bank"
+    command: "/bank"
   playerinv_btn3:
-    enable: false
-    text: ""
-    hover-text: ""
-    command: ""
+    enable: true
+    text: "§2Boutique"
+    hover-text: "➡ §9/shop"
+    command: "/shop"
   playerinv_btn4:
     enable: false
-    text: ""
-    hover-text: ""
-    command: ""
+    text: "§2Liens utiles"
+    hover-text: "➡ §9/www"
+    command: "/www"
   playerinv_btn5:
     enable: false
     text: ""
     hover-text: ""
     command: ""
   playerinv_btn6:
-    enable: false
-    text: ""
-    hover-text: ""
-    command: ""
+    enable: true
+    text: "§aAller au Spawn"
+    hover-text: "➡ §9/spawn"
+    command: "/spawn"
   playerinv_btn7:
-    enable: false
-    text: ""
-    hover-text: ""
-    command: ""
+    enable: true
+    text: "§aRetour au HUB"
+    hover-text: "➡ §9/hub"
+    command: "/hub"

@@ -1,7 +1,7 @@
 package fr.maxairfrance.azplugin.bukkit.listener;
 
 import fr.maxairfrance.azplugin.bukkit.AZManager;
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.commands.AZSummon;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,7 +31,7 @@ public class AZSummonListener implements Listener {
         if (!(event.getEntity() instanceof LivingEntity)) return;
 
         LivingEntity entity = (LivingEntity) event.getEntity();
-        if (!AZPlugin.getInstance().entitiesSize.containsKey(entity) || entity.hasMetadata("summoned_by_lightning") || entity.hasMetadata("summoned")) {
+        if (!EmauAPI.getInstance().entitiesSize.containsKey(entity) || entity.hasMetadata("summoned_by_lightning") || entity.hasMetadata("summoned")) {
             return;
         }
 
@@ -52,7 +52,7 @@ public class AZSummonListener implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!AZPlugin.getInstance().entitiesSize.containsKey(entity) || entity.hasMetadata("summoned_by_lightning")) {
+        if (!EmauAPI.getInstance().entitiesSize.containsKey(entity) || entity.hasMetadata("summoned_by_lightning")) {
             return;
         }
 
@@ -110,7 +110,7 @@ public class AZSummonListener implements Listener {
         PactifyTagMetadata tagMetadata = new PactifyTagMetadata();
         tagMetadata.setText(newTag);
 
-        PLSPPacketEntityMeta packetEntityMeta = AZPlugin.getInstance().entitiesSize.get(entity);
+        PLSPPacketEntityMeta packetEntityMeta = EmauAPI.getInstance().entitiesSize.get(entity);
         packetEntityMeta.setTag(tagMetadata);
 
         entity.getWorld().getPlayers().forEach(player -> AZManager.sendPLSPMessage(player, packetEntityMeta));
@@ -124,7 +124,7 @@ public class AZSummonListener implements Listener {
     }
 
     private int getEntityLevel(LivingEntity entity) {
-        String tag = AZPlugin.getInstance().entitiesSize.get(entity).getTag().getText();
+        String tag = EmauAPI.getInstance().entitiesSize.get(entity).getTag().getText();
         try {
             return Integer.parseInt(tag.split("§cLv. ")[1].split(" ")[0]);
         } catch (Exception e) {
@@ -151,7 +151,7 @@ public class AZSummonListener implements Listener {
 
     private void summonAndMarkEntity(Entity entity, String metadata) {
         if (entity != null) {
-            entity.setMetadata(metadata, new FixedMetadataValue(AZPlugin.getInstance(), true));
+            entity.setMetadata(metadata, new FixedMetadataValue(EmauAPI.getInstance(), true));
         }
     }
 }

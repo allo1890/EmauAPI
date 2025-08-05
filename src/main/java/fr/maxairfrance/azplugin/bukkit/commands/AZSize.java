@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.commands;
 
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.AZPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -51,7 +51,7 @@ public class AZSize implements AZCommand {
                 return;
             }
         }
-        AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer(target);
+        AZPlayer azPlayer = EmauAPI.getAZManager().getPlayer(target);
         PactifyScaleMetadata scaleMetadata = new PactifyScaleMetadata();
         scaleMetadata.setBboxH(size);
         scaleMetadata.setBboxW(size);
@@ -62,7 +62,7 @@ public class AZSize implements AZCommand {
         scaleMetadata.setTags(size);
         azPlayer.getPlayerMeta().setScale(scaleMetadata);
         azPlayer.getEntityMeta().setScale(scaleMetadata);
-        Bukkit.getScheduler().runTaskAsynchronously(AZPlugin.getInstance(), azPlayer::updateMeta);
+        Bukkit.getScheduler().runTaskAsynchronously(EmauAPI.getInstance(), azPlayer::updateMeta);
         sender.sendMessage("§a[§2AZPlugin§a]§f Changement de taille pour le joueur §b" + target.getName() + " §feffectué !");
     }
 }

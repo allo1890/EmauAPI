@@ -6,7 +6,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import fr.maxairfrance.azplugin.bukkit.AZManager;
 import fr.maxairfrance.azplugin.bukkit.AZPlayer;
-import fr.maxairfrance.azplugin.bukkit.AZPlugin;
+import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.config.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -23,7 +23,7 @@ public class AZListener implements Listener {
 
     @EventHandler
     void onQuit(PlayerQuitEvent e){
-        AZPlugin main = AZPlugin.getInstance();
+        EmauAPI main = EmauAPI.getInstance();
         Player p = e.getPlayer();
         main.playersSeeChunks.remove(p);
     }
@@ -31,7 +31,7 @@ public class AZListener implements Listener {
     @EventHandler
     void onJoint(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        AZPlugin main = AZPlugin.getInstance();
+        EmauAPI main = EmauAPI.getInstance();
         ConfigManager config = ConfigManager.getInstance();
 
         if (hasAZLauncher(player)){
@@ -56,10 +56,10 @@ public class AZListener implements Listener {
     }
     @EventHandler
     void onDeath(EntityDeathEvent e) {
-        AZPlugin.getInstance().entitiesSize.remove(e.getEntity());
+        EmauAPI.getInstance().entitiesSize.remove(e.getEntity());
     }
 
-    public AZListener(AZPlugin main) {
+    public AZListener(EmauAPI main) {
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(main, PacketType.Play.Server.SPAWN_ENTITY, PacketType.Play.Server.SPAWN_ENTITY_LIVING, PacketType.Play.Server.SPAWN_ENTITY_EXPERIENCE_ORB, PacketType.Play.Server.NAMED_ENTITY_SPAWN) {
             @Override
             public void onPacketSending(PacketEvent event) {
@@ -67,10 +67,10 @@ public class AZListener implements Listener {
                 Player player = event.getPlayer();
                 Entity entity = event.getPacket().getEntityModifier(player.getWorld()).read(0);
                 if (entity instanceof Player) {
-                    AZPlayer azPlayer = AZPlugin.getAZManager().getPlayer((Player)entity);
+                    AZPlayer azPlayer = EmauAPI.getAZManager().getPlayer((Player)entity);
                     AZManager.sendPLSPMessage(player, azPlayer.getPlayerMeta());
-                } else if (AZPlugin.getInstance().entitiesSize.containsKey(entity)) {
-                    AZManager.sendPLSPMessage(player, AZPlugin.getInstance().entitiesSize.get(entity));
+                } else if (EmauAPI.getInstance().entitiesSize.containsKey(entity)) {
+                    AZManager.sendPLSPMessage(player, EmauAPI.getInstance().entitiesSize.get(entity));
                 }
             }
         });
