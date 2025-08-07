@@ -6,7 +6,6 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import fr.maxairfrance.azplugin.bukkit.config.ConfigManager;
 import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.AZPlayer;
 import org.bukkit.entity.Player;
@@ -148,13 +147,18 @@ public class PacketWindow implements Listener {
     void OnInventoryOpen(InventoryOpenEvent e) {
         if (e.getPlayer() instanceof Player) {
             Player p = (Player) e.getPlayer();
-            for (String character : ConfigManager.getInstance().getSpecialInventoryCharacters()) {
+
+            List<String> specialCharacters = Arrays.asList("§", "⛁", "✦");
+
+            for (String character : specialCharacters) {
                 if (e.getInventory().getTitle().contains(character)) {
                     PacketWindow.customWindow.add(p.getUniqueId());
+                    break;
                 }
             }
         }
     }
+
 
     public static void openInventory(Player player, Inventory inventory) {
         UUID uuid = player.getUniqueId();

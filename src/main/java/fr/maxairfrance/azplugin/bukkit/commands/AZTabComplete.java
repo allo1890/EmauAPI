@@ -1,8 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.commands;
 
-import fr.maxairfrance.azplugin.bukkit.config.PopupConfig;
 import fr.maxairfrance.azplugin.bukkit.handlers.PLSPPlayerModel;
-import fr.maxairfrance.azplugin.bukkit.packets.PacketPopup;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -72,26 +70,6 @@ public class AZTabComplete implements TabCompleter {
                                     completion.add("2");
                                 }
                         break;
-
-                    case "popup":
-                        if (args.length == 2) {
-                            PopupConfig popupConfig = PopupConfig.getInstance();
-                            if (popupConfig != null && popupConfig.popups != null) {
-                                for (PacketPopup popup : popupConfig.popups) {
-                                    if (popup != null && popup.getName().toLowerCase().startsWith(argLower)) {
-                                        completion.add(popup.getName());
-                                    }
-                                }
-                            }
-                        } else if (args.length == 3) {
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                if (player.getName().toLowerCase().startsWith(args[2].toLowerCase())) {
-                                    completion.add(player.getName());
-                                }
-                            }
-                        }
-                        break;
-
                     case "seechunks":
                         if (args.length == 2) {
                             for (Player player : Bukkit.getOnlinePlayers()) {

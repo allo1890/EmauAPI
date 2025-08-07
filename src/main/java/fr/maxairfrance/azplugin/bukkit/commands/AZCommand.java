@@ -11,6 +11,4 @@ public interface AZCommand {
     String description();
 
     void execute(CommandSender sender, String[] args);
-
-
 }

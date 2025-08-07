@@ -1,8 +1,8 @@
 package fr.maxairfrance.azplugin.bukkit.commands;
 
 import fr.maxairfrance.azplugin.bukkit.EmauAPI;
-import fr.maxairfrance.azplugin.bukkit.handlers.PLSPConfFlag;
-import fr.maxairfrance.azplugin.bukkit.packets.PacketConf;
+import fr.maxairfrance.azplugin.bukkit.handlers.PLSPFlag;
+import fr.maxairfrance.azplugin.bukkit.packets.PacketFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,19 +31,19 @@ public class AZSeechunks implements AZCommand {
                 Player target = Bukkit.getPlayer(args[1]);
                 if (args.length >= 3) {
                     if (args[2].equalsIgnoreCase("on")) {
-                        PacketConf.setFlag(target, PLSPConfFlag.SEE_CHUNKS, true);
+                        PacketFlag.setFlag(target, PLSPFlag.SEE_CHUNKS, true);
                     } else if (args[2].equalsIgnoreCase("off")) {
-                        PacketConf.setFlag(target, PLSPConfFlag.SEE_CHUNKS, false);
+                        PacketFlag.setFlag(target, PLSPFlag.SEE_CHUNKS, false);
                     } else {
                         sender.sendMessage("§c/az seechunks <joueur> [on/off]");
                     }
                     return;
                 }
                 if (EmauAPI.getInstance().playersSeeChunks.contains(target)) {
-                    PacketConf.setFlag(target, PLSPConfFlag.SEE_CHUNKS, false);
+                    PacketFlag.setFlag(target, PLSPFlag.SEE_CHUNKS, false);
                     EmauAPI.getInstance().playersSeeChunks.remove(target);
                 } else {
-                    PacketConf.setFlag(target, PLSPConfFlag.SEE_CHUNKS, true);
+                    PacketFlag.setFlag(target, PLSPFlag.SEE_CHUNKS, true);
                     EmauAPI.getInstance().playersSeeChunks.add(target);
                 }
 

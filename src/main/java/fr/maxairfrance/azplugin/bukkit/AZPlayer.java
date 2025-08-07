@@ -1,9 +1,8 @@
 package fr.maxairfrance.azplugin.bukkit;
 
-import fr.maxairfrance.azplugin.bukkit.config.ConfigManager;
-import fr.maxairfrance.azplugin.bukkit.handlers.PLSPConfFlag;
+import fr.maxairfrance.azplugin.bukkit.handlers.PLSPFlag;
 import fr.maxairfrance.azplugin.bukkit.handlers.PLSPConfInt;
-import fr.maxairfrance.azplugin.bukkit.packets.PacketConf;
+import fr.maxairfrance.azplugin.bukkit.packets.PacketFlag;
 import fr.maxairfrance.azplugin.bukkit.packets.PacketUiComponent;
 import fr.maxairfrance.azplugin.bukkit.utils.AZChatComponent;
 import fr.maxairfrance.azplugin.bukkit.utils.AZItemStack;
@@ -80,32 +79,50 @@ public class AZPlayer {
     }
 
     public void loadFlags() {
-        ConfigManager config = ConfigManager.getInstance();
-        PacketConf.setFlag(player, PLSPConfFlag.ATTACK_COOLDOWN, config.isAttackCooldown());
-        PacketConf.setFlag(player, PLSPConfFlag.PLAYER_PUSH, config.isPlayerPush());
-        PacketConf.setFlag(player, PLSPConfFlag.LARGE_HITBOX, config.isLargeHitBox());
-        PacketConf.setFlag(player, PLSPConfFlag.SWORD_BLOCKING, config.isSwordBlocking());
-        PacketConf.setFlag(player, PLSPConfFlag.HIT_AND_BLOCK, config.isHitAndBlock());
-        PacketConf.setFlag(player, PLSPConfFlag.OLD_ENCHANTEMENTS, config.isOldEnchantments());
-        PacketConf.setFlag(player, PLSPConfFlag.SIDEBAR_SCORES, config.isSidebarScore());
-        PacketConf.setFlag(player, PLSPConfFlag.PVP_HIT_PRIORITY, config.isPvpHitPriority());
-        PacketConf.setFlag(player, PLSPConfFlag.SEE_CHUNKS, config.isSeeChunks());
-        PacketConf.setFlag(player, PLSPConfFlag.SMOOTH_EXPERIENCE_BAR, config.isSmoothExperienceBar());
-        PacketConf.setFlag(player, PLSPConfFlag.SORT_TAB_LIST_BY_NAMES, config.isSortTabListByName());
-        PacketConf.setFlag(player, PLSPConfFlag.SERVER_SIDE_ANVIL, config.isServerSideAnvil());
-        PacketConf.setFlag(player, PLSPConfFlag.PISTONS_RETRACT_ENTITIES, config.isPistonRetractEntities());
-        PacketConf.setFlag(player, PLSPConfFlag.HIT_INDICATOR, config.isHitIndicator());
-        PacketConf.setInt(player, PLSPConfInt.CHAT_MESSAGE_MAX_SIZE, config.getChatMaxMessageSize());
-        PacketConf.setInt(player, PLSPConfInt.MAX_BUILD_HEIGHT, config.getMaxBuildHeight());
+        PacketFlag.setFlag(player, PLSPFlag.ATTACK_COOLDOWN, false);
+        PacketFlag.setFlag(player, PLSPFlag.PLAYER_PUSH, false);
+        PacketFlag.setFlag(player, PLSPFlag.LARGE_HITBOX, true);
+        PacketFlag.setFlag(player, PLSPFlag.SWORD_BLOCKING, true);
+        PacketFlag.setFlag(player, PLSPFlag.HIT_AND_BLOCK, true);
+        PacketFlag.setFlag(player, PLSPFlag.OLD_ENCHANTEMENTS, true);
+        PacketFlag.setFlag(player, PLSPFlag.SIDEBAR_SCORES, false);
+        PacketFlag.setFlag(player, PLSPFlag.PVP_HIT_PRIORITY, true);
+        PacketFlag.setFlag(player, PLSPFlag.SEE_CHUNKS, false);
+        PacketFlag.setFlag(player, PLSPFlag.SMOOTH_EXPERIENCE_BAR, true);
+        PacketFlag.setFlag(player, PLSPFlag.SORT_TAB_LIST_BY_NAMES, false);
+        PacketFlag.setFlag(player, PLSPFlag.SERVER_SIDE_ANVIL, false);
+        PacketFlag.setFlag(player, PLSPFlag.PISTONS_RETRACT_ENTITIES, false);
+        PacketFlag.setFlag(player, PLSPFlag.HIT_INDICATOR, false);
 
-        for (PacketUiComponent uiComponent : config.getUIComponents()) {
+        PacketFlag.setInt(player, PLSPConfInt.CHAT_MESSAGE_MAX_SIZE, 150);
+        PacketFlag.setInt(player, PLSPConfInt.MAX_BUILD_HEIGHT, 160);
+
+        List<PacketUiComponent> uiComponents = Arrays.asList(
+                new PacketUiComponent("Menu Emauzium", "gamemenu_achievements", "", "/emauzium"),
+                new PacketUiComponent("Acheter Points VIP", "gamemenu_statistics", "", "/www"),
+                new PacketUiComponent("", "playerinv_cosmetic", "", "/backpack"),
+                new PacketUiComponent("§2Faction", "playerinv_btn1", "\uEEEE➡ §9/f", "/f"),
+                new PacketUiComponent("§2Banques", "playerinv_btn2", "\uEEEE➡ §9/bank", "/bank"),
+                new PacketUiComponent("§2Boutique", "playerinv_btn3", "\uEEEE➡ §9/shop", "/shop"),
+                new PacketUiComponent("§aAller au Spawn", "playerinv_btn6", "\uEEEE➡ §9/spawn", "/spawn"),
+                new PacketUiComponent("§aRetour au HUB", "playerinv_btn7", "\uEEEE➡ §9/hub", "/hub")
+        );
+
+        for (PacketUiComponent uiComponent : uiComponents) {
             AZChatComponent azChatComponent = new AZChatComponent(uiComponent.getText());
+
             if (!uiComponent.getHoverText().isEmpty()) {
-                azChatComponent.setHoverEvent(new AZChatComponent.HoverEvent("show_text", uiComponent.getHoverText().replaceAll("%player%", player.getName())));
+                azChatComponent.setHoverEvent(
+                        new AZChatComponent.HoverEvent("show_text", uiComponent.getHoverText().replace("%player%", player.getName()))
+                );
             }
+
             if (!uiComponent.getCommmand().isEmpty()) {
-                azChatComponent.setClickEvent(new AZChatComponent.ClickEvent("run_command", uiComponent.getCommmand().replaceAll("%player%", player.getName())));
+                azChatComponent.setClickEvent(
+                        new AZChatComponent.ClickEvent("run_command", uiComponent.getCommmand().replace("%player%", player.getName()))
+                );
             }
+
             PLSPPacketUiComponent packetUiComponent = new PLSPPacketUiComponent(uiComponent.getName(), azChatComponent);
             AZManager.sendPLSPMessage(player, packetUiComponent);
         }

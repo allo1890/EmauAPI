@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.handlers;
 
-public enum PLSPConfFlag {
+public enum PLSPFlag {
     ATTACK_COOLDOWN,
     HIT_AND_BLOCK,
     HIT_INDICATOR,

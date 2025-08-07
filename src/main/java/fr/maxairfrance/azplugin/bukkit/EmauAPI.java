@@ -1,7 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit;
 
 import fr.maxairfrance.azplugin.bukkit.commands.*;
-import fr.maxairfrance.azplugin.bukkit.config.ConfigManager;
 import fr.maxairfrance.azplugin.bukkit.listener.AZListener;
 import fr.maxairfrance.azplugin.bukkit.packets.PacketWindow;
 import lombok.Getter;
@@ -25,7 +24,6 @@ public final class EmauAPI extends JavaPlugin {
     private BukkitTask bukkitTask;
     public boolean isUpdate;
     private CommandManager commandManager;
-    private ConfigManager configManager;
 
     @Override
     public void onEnable() {
@@ -33,7 +31,6 @@ public final class EmauAPI extends JavaPlugin {
         saveDefaultConfig();
         getServer().getPluginManager().registerEvents(new fr.maxairfrance.azplugin.bukkit.listener.AZSummonListener(), this);
         Metrics metrics = new Metrics(this, 21554);
-        new ConfigManager(this);
         getServer().getPluginManager().registerEvents(new PacketWindow(this), this);
         AZManager = new AZManager(this);
         commandManager = new CommandManager();
@@ -51,14 +48,12 @@ public final class EmauAPI extends JavaPlugin {
         commandManager.addCommand(new AZModel());
         commandManager.addCommand(new AZOpacity());
         commandManager.addCommand(new AZWorldEnv());
-        commandManager.addCommand(new AZVignette());
         commandManager.addCommand(new AZSeechunks());
         commandManager.addCommand(new AZTag());
         commandManager.addCommand(new AZSubTag());
         commandManager.addCommand(new AZSupTag());
         commandManager.addCommand(new AZSummon());
         commandManager.addCommand(new AZItemRender());
-        commandManager.addCommand(new AZPopup());
     }
 
     public String getPluginVersion() {

@@ -46,9 +46,6 @@ permissions:
   azplugin.command.worldenv:
     description: Permission pour la sous-commande 1
     default: op
-  azplugin.command.vignette:
-    description: Permission pour la sous-commande 1
-    default: op
   azplugin.command.seechunks:
     description: Permission pour la sous-commande 1
     default: op
