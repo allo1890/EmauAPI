@@ -1,6 +1,7 @@
 package fr.maxairfrance.azplugin.bukkit.packets;
 
 import fr.maxairfrance.azplugin.bukkit.AZManager;
+import fr.maxairfrance.azplugin.bukkit.AZPlayer;
 import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import fr.maxairfrance.azplugin.bukkit.handlers.PopupType;
 import fr.maxairfrance.azplugin.bukkit.utils.AZChatComponent;
@@ -35,6 +36,10 @@ public class PacketPopup {
     }
 
     public static void setPrompt(Player player, AZChatComponent text, AZChatComponent.ClickEvent clickEvent) {
+        if (!AZPlayer.hasAZLauncher(player)) {
+            return;
+        }
+
         AZChatComponent okButton = new AZChatComponent("ok");
 
         PLSPPacketPopupPrompt popupPrompt = new PLSPPacketPopupPrompt(text, okButton, new AZChatComponent("cancel"), "", new SimplePLSPRegex(SimplePLSPRegex.Engine.RE2J, "(?s).*"), new SimplePLSPRegex(SimplePLSPRegex.Engine.RE2J, "(?s).*"), false);
@@ -45,18 +50,30 @@ public class PacketPopup {
     }
 
     public static void setAlert(Player player, TextComponent textComponent) {
+        if (!AZPlayer.hasAZLauncher(player)) {
+            return;
+        }
+
         PLSPPacketPopupAlert popupAlert = new PLSPPacketPopupAlert(new AZChatComponent(textComponent), new AZChatComponent("ok"));
         EmauAPI.getAZManager();
         AZManager.sendPLSPMessage(player, popupAlert);
     }
 
     public static void setAlert(Player player, String text) {
+        if (!AZPlayer.hasAZLauncher(player)) {
+            return;
+        }
+
         PLSPPacketPopupAlert popupAlert = new PLSPPacketPopupAlert(new AZChatComponent(text), new AZChatComponent("ok"));
         EmauAPI.getAZManager();
         AZManager.sendPLSPMessage(player, popupAlert);
     }
 
     public void send(Player player) {
+        if (!AZPlayer.hasAZLauncher(player)) {
+            return;
+        }
+
         for (AZChatComponent extra : textComponent.getExtra()) {
             extra.setText(extra.getText().replaceAll("%player%", player.getName()));
         }

@@ -8,12 +8,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 import pactify.client.api.plsp.packet.client.PLSPPacketEntityMeta;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 
 public final class EmauAPI extends JavaPlugin {
 
@@ -21,15 +22,11 @@ public final class EmauAPI extends JavaPlugin {
     @Getter private static AZManager AZManager;
     public HashMap<Entity, PLSPPacketEntityMeta> entitiesSize;
     public List<Player> playersSeeChunks;
-    private BukkitTask bukkitTask;
-    public boolean isUpdate;
     private CommandManager commandManager;
 
     @Override
     public void onEnable() {
         instance = this;
-        saveDefaultConfig();
-        getServer().getPluginManager().registerEvents(new fr.maxairfrance.azplugin.bukkit.listener.AZSummonListener(), this);
         Metrics metrics = new Metrics(this, 21554);
         getServer().getPluginManager().registerEvents(new PacketWindow(this), this);
         AZManager = new AZManager(this);
@@ -56,12 +53,21 @@ public final class EmauAPI extends JavaPlugin {
         commandManager.addCommand(new AZItemRender());
     }
 
-    public String getPluginVersion() {
-        return this.getDescription().getVersion();
-    }
-
     @Override
     public void onDisable() {
+        if (AZManager != null) {
+            try {
+                AZManager.close();
+            } catch (IOException e) {
+                getLogger().log(Level.WARNING, "Error closing AZManager", e);
+            }
+        }
 
+        if (entitiesSize != null) {
+            entitiesSize.clear();
+        }
+        if (playersSeeChunks != null) {
+            playersSeeChunks.clear();
+        }
     }
 }

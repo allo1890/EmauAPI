@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import pactify.client.api.mcprotocol.util.NotchianPacketUtil;
 import pactify.client.api.plsp.PLSPPacket;
@@ -20,11 +21,16 @@ import pactify.client.api.plsp.PLSPProtocol;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AZManager implements Listener, Closeable {
+
+    private static final Pattern AZ_HOSTNAME_PATTERN = Pattern.compile("[\u0000\u0002]PAC([0-9A-F]{5})[\u0000\u0002]");
 
     @Getter private final Plugin plugin;
     private final Map<UUID, AZPlayer> players;
@@ -38,8 +44,12 @@ public class AZManager implements Listener, Closeable {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerLogin(final PlayerLoginEvent event) {
-
         event.getPlayer().setMetadata("AZPlugin:hostname", new FixedMetadataValue(this.plugin, event.getHostname()));
+
+        if (!isValidLauncher(event.getPlayer())) {
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "AZLauncher requis - Telecharger sur https://az-launcher.nz/fr/");
+            return;
+        }
 
         if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
             this.playerQuit(event.getPlayer());
@@ -54,7 +64,9 @@ public class AZManager implements Listener, Closeable {
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final AZPlayer AZPlayer = this.getPlayer(event.getPlayer());
-        AZPlayer.join();
+        if (AZPlayer != null) {
+            AZPlayer.join();
+        }
     }
 
     public AZPlayer getPlayer(final Player player) {
@@ -73,7 +85,29 @@ public class AZManager implements Listener, Closeable {
         }
     }
 
+    private boolean isValidLauncher(Player player) {
+        try {
+            final List<MetadataValue> hostnameMeta = player.getMetadata("AZPlugin:hostname");
+            if (hostnameMeta.isEmpty()) return false;
+
+            final String hostname = hostnameMeta.get(0).asString();
+            final Matcher matcher = AZ_HOSTNAME_PATTERN.matcher(hostname);
+
+            if (matcher.find()) {
+                int version = Integer.parseInt(matcher.group(1), 16);
+                return version == 16;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public static void sendPLSPMessage(Player player, PLSPPacket<PLSPPacketHandler.ClientHandler> message) {
+        if (!AZPlayer.hasAZLauncher(player)) {
+            return;
+        }
+
         try {
             PLSPPacketBuffer buf = new PLSPPacketBuffer();
             PLSPProtocol.PacketData<?> packetData = PLSPProtocol.getClientPacketByClass(message.getClass());

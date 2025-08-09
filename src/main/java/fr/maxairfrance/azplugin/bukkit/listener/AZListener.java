@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
 public class AZListener implements Listener {
 
     @EventHandler
@@ -33,15 +34,21 @@ public class AZListener implements Listener {
             public void onPacketSending(PacketEvent event) {
                 int entityId = event.getPacket().getIntegers().read(0);
                 Player player = event.getPlayer();
+
+                if (!AZPlayer.hasAZLauncher(player)) {
+                    return;
+                }
+
                 Entity entity = event.getPacket().getEntityModifier(player.getWorld()).read(0);
                 if (entity instanceof Player) {
                     AZPlayer azPlayer = EmauAPI.getAZManager().getPlayer((Player)entity);
-                    AZManager.sendPLSPMessage(player, azPlayer.getPlayerMeta());
+                    if (azPlayer != null && azPlayer.hasLauncher()) {
+                        AZManager.sendPLSPMessage(player, azPlayer.getPlayerMeta());
+                    }
                 } else if (EmauAPI.getInstance().entitiesSize.containsKey(entity)) {
                     AZManager.sendPLSPMessage(player, EmauAPI.getInstance().entitiesSize.get(entity));
                 }
             }
         });
     }
-
 }
