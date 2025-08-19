@@ -8,12 +8,12 @@ public class PacketUiComponent {
     private final String text;
     private final String name;
     private final String hoverText;
-    private final String commmand;
+    private final String command;
 
-    public PacketUiComponent(String text, String name, String hoverText, String commmand) {
+    public PacketUiComponent(String text, String name, String hoverText, String command) {
         this.text = text;
         this.name = name;
         this.hoverText = hoverText;
-        this.commmand = commmand;
+        this.command = command;
     }
 }

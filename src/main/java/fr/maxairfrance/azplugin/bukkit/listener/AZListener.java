@@ -43,7 +43,7 @@ public class AZListener implements Listener {
                 if (entity instanceof Player) {
                     AZPlayer azPlayer = EmauAPI.getAZManager().getPlayer((Player)entity);
                     if (azPlayer != null && azPlayer.hasLauncher()) {
-                        AZManager.sendPLSPMessage(player, azPlayer.getPlayerMeta());
+                        AZManager.sendPLSPMessage(player, azPlayer.getEntityMeta());
                     }
                 } else if (EmauAPI.getInstance().entitiesSize.containsKey(entity)) {
                     AZManager.sendPLSPMessage(player, EmauAPI.getInstance().entitiesSize.get(entity));

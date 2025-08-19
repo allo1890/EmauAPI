@@ -39,13 +39,25 @@ public class AZPlayer {
         final List<MetadataValue> hostnameMeta = this.player.getMetadata("AZPlugin:hostname");
         if (!hostnameMeta.isEmpty()) {
             final String hostname = hostnameMeta.get(0).asString();
-            final Matcher m = AZPlayer.AZ_HOSTNAME_PATTERN.matcher(hostname);
+            final Matcher m = AZ_HOSTNAME_PATTERN.matcher(hostname);
             if (m.find()) {
-                this.launcherProtocolVersion = Math.max(1, Integer.parseInt(m.group(1), 16));
+                try {
+                    this.launcherProtocolVersion = Math.max(1, Integer.parseInt(m.group(1), 16));
+                } catch (NumberFormatException e) {
+                    this.service.getPlugin().getLogger().warning(
+                            "Invalid launcher protocol version format for " + this.player.getName() + ": " + m.group(1)
+                    );
+                    this.launcherProtocolVersion = 1;
+                }
+            } else {
+                this.launcherProtocolVersion = 1;
             }
-        }
-        else {
-            this.service.getPlugin().getLogger().warning("Unable to verify the launcher of " + this.player.getName() + ": it probably logged when the plugin was disabled!");
+        } else {
+            this.service.getPlugin().getLogger().warning(
+                    "Unable to verify the launcher of " + this.player.getName() +
+                            ": it probably logged when the plugin was disabled!"
+            );
+            this.launcherProtocolVersion = 1;
         }
         BukkitUtil.addChannel(this.player, "PLSP");
     }
@@ -54,23 +66,21 @@ public class AZPlayer {
         this.joined = true;
         AZManager.sendPLSPMessage(this.player, new PLSPPacketReset());
 
-            AZItemStack azItemStack = new AZItemStack(new ItemStack(Material.DIRT));
-            PactifyCosmeticEquipment cosmeticEquipment = new PactifyCosmeticEquipment(azItemStack);
-            AZChatComponent prefixText = new AZChatComponent("§bKit ");
-            prefixText.setClickEvent(new AZChatComponent.ClickEvent("run_command", "/kit pvp"));
-            prefixText.setHoverEvent(new AZChatComponent.HoverEvent("show_text", "§béquiper le kit pvp"));
-            cosmeticEquipment.setTooltipPrefix(prefixText);
+        AZItemStack azItemStack = new AZItemStack(new ItemStack(Material.STONE_SWORD));
+        PactifyCosmeticEquipment cosmeticEquipment = new PactifyCosmeticEquipment(azItemStack);
+        AZChatComponent prefixText = new AZChatComponent("§bKit ");
+        prefixText.setClickEvent(new AZChatComponent.ClickEvent("run_command", "/kit tools"));
+        prefixText.setHoverEvent(new AZChatComponent.HoverEvent("show_text", "§béquiper le kit pvp"));
+        cosmeticEquipment.setTooltipPrefix(prefixText);
 
-            PLSPPacketPlayerCosmeticEquipment packetCosmeticEquipment = new PLSPPacketPlayerCosmeticEquipment();
-            packetCosmeticEquipment.setPlayerId(this.player.getUniqueId());
-            packetCosmeticEquipment.setSlot(PactifyCosmeticEquipmentSlot.CUSTOM_1);
-            packetCosmeticEquipment.setEquipment(cosmeticEquipment);
+        PLSPPacketPlayerCosmeticEquipment packetCosmeticEquipment = new PLSPPacketPlayerCosmeticEquipment();
+        packetCosmeticEquipment.setPlayerId(this.player.getUniqueId());
+        packetCosmeticEquipment.setSlot(PactifyCosmeticEquipmentSlot.CUSTOM_1);
+        packetCosmeticEquipment.setEquipment(cosmeticEquipment);
 
-            Bukkit.getScheduler().runTask(EmauAPI.instance, () -> {
-                AZManager.sendPLSPMessage(this.player, packetCosmeticEquipment);
-            });
-
-
+        Bukkit.getScheduler().runTask(EmauAPI.getInstance(), () -> {
+            AZManager.sendPLSPMessage(this.player, packetCosmeticEquipment);
+        });
         this.sendCustomItems();
     }
 
@@ -117,9 +127,9 @@ public class AZPlayer {
                 );
             }
 
-            if (!uiComponent.getCommmand().isEmpty()) {
+            if (!uiComponent.getCommand().isEmpty()) {
                 azChatComponent.setClickEvent(
-                        new AZChatComponent.ClickEvent("run_command", uiComponent.getCommmand().replace("%player%", player.getName()))
+                        new AZChatComponent.ClickEvent("run_command", uiComponent.getCommand().replace("%player%", player.getName()))
                 );
             }
 
@@ -129,15 +139,23 @@ public class AZPlayer {
     }
 
     public boolean hasLauncher() {
-        return this.launcherProtocolVersion == 16;
+        return this.launcherProtocolVersion >= 16;
     }
 
     public AZPlayer(AZManager service, Player player) {
+        if (service == null) {
+            throw new IllegalArgumentException("AZManager service cannot be null");
+        }
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null");
+        }
+
         this.service = service;
         this.player = player;
         this.playerMeta = new PLSPPacketPlayerMeta(player.getUniqueId());
         this.entityMeta = new PLSPPacketEntityMeta(player.getEntityId());
         this.playerMeta.setModel(new PactifyModelMetadata(-1));
+        this.entityMeta.setModel(new PactifyModelMetadata(-1));
         Bukkit.getScheduler().runTaskAsynchronously(EmauAPI.getInstance(), this::loadFlags);
     }
 
@@ -222,7 +240,6 @@ public class AZPlayer {
 
         AZPlayer azPlayer = azManager.getPlayer(player);
         if (azPlayer == null) {
-            Bukkit.getLogger().warning("AZPlayer is null for player: " + player.getName());
             return false;
         }
 
@@ -231,8 +248,10 @@ public class AZPlayer {
 
 
     public void updateMeta() {
-        for (Player pl : this.player.getWorld().getPlayers()) {
-            AZManager.sendPLSPMessage(pl, this.entityMeta);
+        for (Player observer : this.player.getWorld().getPlayers()) {
+            if (!observer.equals(this.player)) {
+                AZManager.sendPLSPMessage(observer, this.entityMeta);
+            }
         }
 
         AZManager.sendPLSPMessage(this.player, this.playerMeta);

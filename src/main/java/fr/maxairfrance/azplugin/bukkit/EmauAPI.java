@@ -27,7 +27,7 @@ public final class EmauAPI extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        Metrics metrics = new Metrics(this, 21554);
+        new Metrics(this, 21554);
         getServer().getPluginManager().registerEvents(new PacketWindow(this), this);
         AZManager = new AZManager(this);
         commandManager = new CommandManager();

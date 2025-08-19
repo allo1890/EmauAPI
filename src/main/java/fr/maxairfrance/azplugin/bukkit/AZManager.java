@@ -1,5 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit;
 
+import fr.maxairfrance.azplugin.bukkit.utils.ConcretePLSPPacketBuffer;
 import fr.maxairfrance.azplugin.bukkit.utils.PLSPPacketBuffer;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -109,7 +110,7 @@ public class AZManager implements Listener, Closeable {
         }
 
         try {
-            PLSPPacketBuffer buf = new PLSPPacketBuffer();
+            PLSPPacketBuffer buf = new ConcretePLSPPacketBuffer();
             PLSPProtocol.PacketData<?> packetData = PLSPProtocol.getClientPacketByClass(message.getClass());
             NotchianPacketUtil.writeString(buf, packetData.getId(), 32767);
             message.write(buf);

@@ -4,7 +4,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import pactify.client.api.plsp.AbstractPLSPPacketBuffer;
 
-public class PLSPPacketBuffer extends AbstractPLSPPacketBuffer<PLSPPacketBuffer> {
+public abstract class PLSPPacketBuffer extends AbstractPLSPPacketBuffer<PLSPPacketBuffer> {
 
     private final ByteArrayDataOutput handle = ByteStreams.newDataOutput();
 

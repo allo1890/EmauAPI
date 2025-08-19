@@ -1,38 +1,68 @@
 package fr.maxairfrance.azplugin.bukkit.utils;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pactify.client.api.mcprotocol.NotchianPacketBuffer;
 import pactify.client.api.mcprotocol.model.NotchianItemStack;
+import pactify.client.api.mcprotocol.model.NotchianNbtTagCompound;
 
 public class AZItemStack implements NotchianItemStack {
 
-    private final int id;
-    private final byte amount;
-    private final short damage;
+    private int id;
+    private int amount;
+    private int damage;
+    private NotchianNbtTagCompound tag;
 
     public AZItemStack(ItemStack itemStack) {
         this.id = itemStack.getTypeId();
-        this.amount = (byte)itemStack.getDurability();
+        this.amount = itemStack.getAmount();
         this.damage = itemStack.getDurability();
+        this.tag = null;
     }
 
-    public void write(NotchianPacketBuffer notchianPacketBuffer) {
-        notchianPacketBuffer.writeShort(276);
-        notchianPacketBuffer.writeByte(1);
-        notchianPacketBuffer.writeShort(0);
-        notchianPacketBuffer.writeByte(0);
+    @Override
+    public int getItemId() {
+        return id;
     }
 
+    @Override
+    public int getCount() {
+        return amount;
+    }
+
+    @Override
+    public int getDamage() {
+        return damage;
+    }
+
+    @Override
+    @Nullable
+    public NotchianNbtTagCompound getTag() {
+        return tag;
+    }
+
+    @Override
+    @NotNull
     public NotchianItemStack shallowClone() {
-        try {
-            return (AZItemStack)super.clone();
-        } catch (CloneNotSupportedException var2) {
-            CloneNotSupportedException e = var2;
-            throw new RuntimeException(e);
-        }
+        AZItemStack clone = new AZItemStack();
+        clone.id = this.id;
+        clone.amount = this.amount;
+        clone.damage = this.damage;
+        clone.tag = this.tag;
+        return clone;
     }
 
+    @Override
+    @NotNull
     public NotchianItemStack deepClone() {
-        return null;
+        AZItemStack clone = new AZItemStack();
+        clone.id = this.id;
+        clone.amount = this.amount;
+        clone.damage = this.damage;
+        clone.tag = this.tag != null ? this.tag.deepClone() : null;
+        return clone;
     }
+
+    private AZItemStack() {}
 }
