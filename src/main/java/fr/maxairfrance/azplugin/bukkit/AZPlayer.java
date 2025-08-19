@@ -3,6 +3,7 @@ package fr.maxairfrance.azplugin.bukkit;
 import fr.maxairfrance.azplugin.bukkit.handlers.PLSPFlag;
 import fr.maxairfrance.azplugin.bukkit.handlers.PLSPConfInt;
 import fr.maxairfrance.azplugin.bukkit.packets.PacketFlag;
+import fr.maxairfrance.azplugin.bukkit.packets.PacketReset;
 import fr.maxairfrance.azplugin.bukkit.packets.PacketUiComponent;
 import fr.maxairfrance.azplugin.bukkit.utils.AZChatComponent;
 import fr.maxairfrance.azplugin.bukkit.utils.AZItemStack;
@@ -64,7 +65,7 @@ public class AZPlayer {
 
     public void join() {
         this.joined = true;
-        AZManager.sendPLSPMessage(this.player, new PLSPPacketReset());
+        PacketReset.reset(this.player);
 
         AZItemStack azItemStack = new AZItemStack(new ItemStack(Material.STONE_SWORD));
         PactifyCosmeticEquipment cosmeticEquipment = new PactifyCosmeticEquipment(azItemStack);
@@ -245,7 +246,6 @@ public class AZPlayer {
 
         return azPlayer.hasLauncher();
     }
-
 
     public void updateMeta() {
         for (Player observer : this.player.getWorld().getPlayers()) {

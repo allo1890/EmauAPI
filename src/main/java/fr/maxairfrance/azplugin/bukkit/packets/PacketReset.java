@@ -1,13 +1,22 @@
 package fr.maxairfrance.azplugin.bukkit.packets;
 
+import fr.maxairfrance.azplugin.bukkit.AZManager;
 import fr.maxairfrance.azplugin.bukkit.EmauAPI;
 import org.bukkit.entity.Player;
 import pactify.client.api.plsp.packet.client.PLSPPacketReset;
 
 public class PacketReset {
-    private static final fr.maxairfrance.azplugin.bukkit.AZManager AZManager = EmauAPI.getAZManager();
 
     public static void reset(Player player) {
-        fr.maxairfrance.azplugin.bukkit.AZManager.sendPLSPMessage(player, new PLSPPacketReset());
+        if (player == null) {
+            return;
+        }
+
+        AZManager azManager = EmauAPI.getAZManager();
+        if (azManager == null) {
+            return;
+        }
+
+        azManager.sendPLSPMessage(player, new PLSPPacketReset());
     }
 }

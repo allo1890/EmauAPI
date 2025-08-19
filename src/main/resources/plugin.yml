@@ -2,7 +2,7 @@ name: EmauAPI
 version: '${project.version}'
 main: fr.maxairfrance.azplugin.bukkit.EmauAPI
 author: MaxAirFrance
-softdepend: [Protocolib]
+depend: [ProtocolLib]
 commands:
   az:
     description: commande du plugin.
