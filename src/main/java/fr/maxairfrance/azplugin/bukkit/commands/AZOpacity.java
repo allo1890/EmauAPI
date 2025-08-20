@@ -15,7 +15,7 @@ public class AZOpacity implements AZCommand {
 
     @Override
     public String permission() {
-        return "azplugin.command.opacity";
+        return "emauapi.command.opacity";
     }
 
     @Override

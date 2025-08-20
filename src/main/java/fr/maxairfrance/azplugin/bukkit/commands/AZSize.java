@@ -16,7 +16,7 @@ public class AZSize implements AZCommand {
 
     @Override
     public String permission() {
-        return "azplugin.command.size";
+        return "emauapi.command.size";
     }
 
     @Override
@@ -59,6 +59,7 @@ public class AZSize implements AZCommand {
         scaleMetadata.setRenderH(size);
         scaleMetadata.setRenderW(size);
         scaleMetadata.setDefined(true);
+        scaleMetadata.setScaleItems(true);
         scaleMetadata.setTags(size);
         azPlayer.getPlayerMeta().setScale(scaleMetadata);
         azPlayer.getEntityMeta().setScale(scaleMetadata);

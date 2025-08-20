@@ -6,49 +6,29 @@ depend: [ProtocolLib]
 commands:
   az:
     description: commande du plugin.
-    permission: azplugin.commands
+    permission: emauapi.commands
     permission-message: §cVous n'avez pas la permission d'utiliser cette commande !
 
 permissions:
-  azplugin.*:
+  emauapi.*:
     description: Permet de mettre toutes les permission
     default: op
-  azplugin.command.size:
+  emauapi.command.size:
     description: Permission pour la commande principale
     default: op
-  azplugin.command.check:
+  emauapi.command.check:
     description: Permission pour la sous-commande 1
     default: op
-  azplugin.command.list:
+  emauapi.command.list:
     description: Permission pour la sous-commande 1
     default: op
-  azplugin.command.reload:
+  emauapi.command.itemrender:
     description: Permission pour la sous-commande 1
     default: op
-  azplugin.command.itemrender:
+  emauapi.command.opacity:
     description: Permission pour la sous-commande 1
     default: op
-  azplugin.command.model:
+  emauapi.command.worldenv:
     description: Permission pour la sous-commande 1
-    default: op
-  azplugin.command.opacity:
-    description: Permission pour la sous-commande 1
-    default: op
-  azplugin.command.tag:
-    description: Permission pour la sous-commande 1
-    default: op
-  azplugin.command.suptag:
-    description: Permission pour la sous-commande 1
-    default: op
-  azplugin.command.subtag:
-    description: Permission pour la sous-commande 1
-    default: op
-  azplugin.command.worldenv:
-    description: Permission pour la sous-commande 1
-    default: op
-  azplugin.command.seechunks:
-    description: Permission pour la sous-commande 1
-    default: op
-  azplugin.update:
     default: op
 

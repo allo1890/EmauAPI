@@ -17,7 +17,7 @@ public class AZList implements AZCommand {
 
     @Override
     public String permission() {
-        return "azplugin.command.list";
+        return "emauapi.command.list";
     }
 
     @Override

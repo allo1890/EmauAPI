@@ -15,7 +15,7 @@ public class AZItemRender implements AZCommand {
 
     @Override
     public String permission() {
-        return "azplugin.command.itemrender";
+        return "emauapi.command.itemrender";
     }
 
     @Override

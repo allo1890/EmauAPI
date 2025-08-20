@@ -17,7 +17,7 @@ public class AZModel implements AZCommand {
 
     @Override
     public String permission() {
-        return "azplugin.command.model";
+        return "emauapi.command.model";
     }
 
     @Override

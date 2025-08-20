@@ -20,7 +20,7 @@ public class AZSummon implements AZCommand {
 
     @Override
     public String permission() {
-        return "azplugin.command.summon";
+        return "emauapi.command.summon";
     }
 
     @Override

@@ -17,7 +17,7 @@ public class AZWorldEnv implements AZCommand {
 
     @Override
     public String permission() {
-        return "azplugin.command.worldenv";
+        return "emauapi.command.worldenv";
     }
 
     @Override

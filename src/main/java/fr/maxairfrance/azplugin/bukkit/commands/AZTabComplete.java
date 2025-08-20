@@ -16,7 +16,7 @@ public class AZTabComplete implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
-        if (s.equalsIgnoreCase("az") && commandSender.hasPermission("azplugin.*")) {
+        if (s.equalsIgnoreCase("az") && commandSender.hasPermission("emauapi.*")) {
             if (args.length == 1) {
                 CommandManager commandManager = CommandManager.getInstance();
                 if (commandManager == null || commandManager.getCommands() == null) {
@@ -82,43 +82,6 @@ public class AZTabComplete implements TabCompleter {
                             completion.add("off");
                         }
                         break;
-
-                    case "subtag":
-                        if (args.length == 2) {
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                if (player.getName().toLowerCase().startsWith(argLower)) {
-                                    completion.add(player.getName());
-                                }
-                            }
-                        } else if (args.length == 3) {
-                            completion.add("reset");
-                        }
-                        break;
-
-                    case "tag":
-                        if (args.length == 2) {
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                if (player.getName().toLowerCase().startsWith(argLower)) {
-                                    completion.add(player.getName());
-                                }
-                            }
-                        } else if (args.length == 3) {
-                            completion.add("reset");
-                        }
-                        break;
-
-                    case "suptag":
-                        if (args.length == 2) {
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                if (player.getName().toLowerCase().startsWith(argLower)) {
-                                    completion.add(player.getName());
-                                }
-                            }
-                        } else if (args.length == 3) {
-                            completion.add("reset");
-                        }
-                        break;
-
                     case "itemrender":
                         if (args.length == 2) {
                             completion.add("rarity");

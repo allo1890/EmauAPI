@@ -45,10 +45,6 @@ public final class EmauAPI extends JavaPlugin {
         commandManager.addCommand(new AZModel());
         commandManager.addCommand(new AZOpacity());
         commandManager.addCommand(new AZWorldEnv());
-        commandManager.addCommand(new AZSeechunks());
-        commandManager.addCommand(new AZTag());
-        commandManager.addCommand(new AZSubTag());
-        commandManager.addCommand(new AZSupTag());
         commandManager.addCommand(new AZSummon());
         commandManager.addCommand(new AZItemRender());
     }
