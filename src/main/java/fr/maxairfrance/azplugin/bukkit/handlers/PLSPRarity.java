@@ -7,5 +7,7 @@ public enum PLSPRarity {
     RARE,
     EPIC,
     LEGENDARY,
-    MYTHIC;
+    MYTHIC,
+    COSMIC,
+    ULTIMATE;
 }

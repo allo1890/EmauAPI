@@ -105,9 +105,9 @@ public class AZTabComplete implements TabCompleter {
                         break;
                     case "size":
                         if (args.length == 2) {
-                            completion.add("0.5");
-                            completion.add("1.0");
-                            completion.add("2.0");
+                            completion.add("1");
+                            completion.add("2");
+                            completion.add("3");
                         } else if (args.length == 3) {
                             for (Player player : Bukkit.getOnlinePlayers()) {
                                 if (player.getName().toLowerCase().startsWith(args[2].toLowerCase())) {

@@ -43,7 +43,7 @@ public class AZPlayer {
             final Matcher m = AZ_HOSTNAME_PATTERN.matcher(hostname);
             if (m.find()) {
                 try {
-                    this.launcherProtocolVersion = Math.max(1, Integer.parseInt(m.group(1), 16));
+                    this.launcherProtocolVersion = Math.max(1, Integer.parseInt(m.group(1), 17));
                 } catch (NumberFormatException e) {
                     this.service.getPlugin().getLogger().warning(
                             "Invalid launcher protocol version format for " + this.player.getName() + ": " + m.group(1)
@@ -67,10 +67,10 @@ public class AZPlayer {
         this.joined = true;
         PacketReset.reset(this.player);
 
-        AZItemStack azItemStack = new AZItemStack(new ItemStack(Material.STONE_SWORD));
+        AZItemStack azItemStack = new AZItemStack(new ItemStack(Material.DIRT));
         PactifyCosmeticEquipment cosmeticEquipment = new PactifyCosmeticEquipment(azItemStack);
         AZChatComponent prefixText = new AZChatComponent("§bKit ");
-        prefixText.setClickEvent(new AZChatComponent.ClickEvent("run_command", "/kit tools"));
+        prefixText.setClickEvent(new AZChatComponent.ClickEvent("run_command", "/kit pvp"));
         prefixText.setHoverEvent(new AZChatComponent.HoverEvent("show_text", "§béquiper le kit pvp"));
         cosmeticEquipment.setTooltipPrefix(prefixText);
 
@@ -115,8 +115,8 @@ public class AZPlayer {
                 new PacketUiComponent("§2Faction", "playerinv_btn1", "\uEEEE➡ §9/f", "/f"),
                 new PacketUiComponent("§2Banques", "playerinv_btn2", "\uEEEE➡ §9/bank", "/bank"),
                 new PacketUiComponent("§2Boutique", "playerinv_btn3", "\uEEEE➡ §9/shop", "/shop"),
-                new PacketUiComponent("§aAller au Spawn", "playerinv_btn6", "\uEEEE➡ §9/spawn", "/spawn"),
-                new PacketUiComponent("§aRetour au HUB", "playerinv_btn7", "\uEEEE➡ §9/hub", "/hub")
+                new PacketUiComponent("§aAller au RTP", "playerinv_btn6", "\uEEEE➡ §9/rtp", "/rtp"),
+                new PacketUiComponent("§aRetour au Spawn", "playerinv_btn7", "\uEEEE➡ §9/spawn", "/spawn")
         );
 
         for (PacketUiComponent uiComponent : uiComponents) {
@@ -140,7 +140,7 @@ public class AZPlayer {
     }
 
     public boolean hasLauncher() {
-        return this.launcherProtocolVersion >= 16;
+        return this.launcherProtocolVersion >= 17;
     }
 
     public AZPlayer(AZManager service, Player player) {

@@ -21,7 +21,7 @@ public class PacketFlag {
         PacketConfFlag.setFlag(flag.name().toLowerCase());
         PacketConfFlag.setEnabled(enabled);
 
-        fr.maxairfrance.azplugin.bukkit.AZManager.sendPLSPMessage(player, PacketConfFlag);
+        AZManager.sendPLSPMessage(player, PacketConfFlag);
     }
 
     public static void setInt(Player player, PLSPConfInt param, Integer value) {

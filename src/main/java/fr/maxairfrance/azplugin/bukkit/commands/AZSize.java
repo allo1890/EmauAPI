@@ -64,6 +64,6 @@ public class AZSize implements AZCommand {
         azPlayer.getPlayerMeta().setScale(scaleMetadata);
         azPlayer.getEntityMeta().setScale(scaleMetadata);
         Bukkit.getScheduler().runTaskAsynchronously(EmauAPI.getInstance(), azPlayer::updateMeta);
-        sender.sendMessage("§a[§2AZPlugin§a]§f Changement de taille pour le joueur §b" + target.getName() + " §feffectué !");
+        sender.sendMessage("§a[§2EmauPlugin§a]§f Changement de taille pour le joueur §b" + target.getName() + " §feffectué !");
     }
 }

@@ -148,7 +148,7 @@ public class PacketWindow implements Listener {
         if (e.getPlayer() instanceof Player) {
             Player p = (Player) e.getPlayer();
 
-            List<String> specialCharacters = Arrays.asList("§", "§", "§");
+            List<String> specialCharacters = Arrays.asList("µ");
 
             for (String character : specialCharacters) {
                 if (e.getInventory().getTitle().contains(character)) {

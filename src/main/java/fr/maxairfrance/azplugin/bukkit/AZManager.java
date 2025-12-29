@@ -47,10 +47,10 @@ public class AZManager implements Listener, Closeable {
     public void onPlayerLogin(final PlayerLoginEvent event) {
         event.getPlayer().setMetadata("AZPlugin:hostname", new FixedMetadataValue(this.plugin, event.getHostname()));
 
-        if (!isValidLauncher(event.getPlayer())) {
+        /*if (!isValidLauncher(event.getPlayer())) {
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "AZLauncher requis - Telecharger sur https://az-launcher.nz/fr/");
             return;
-        }
+        }*/
 
         if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
             this.playerQuit(event.getPlayer());
@@ -95,8 +95,8 @@ public class AZManager implements Listener, Closeable {
             final Matcher matcher = AZ_HOSTNAME_PATTERN.matcher(hostname);
 
             if (matcher.find()) {
-                int version = Integer.parseInt(matcher.group(1), 16);
-                return version == 16;
+                int version = Integer.parseInt(matcher.group(1), 17);
+                return version == 17;
             }
             return false;
         } catch (Exception e) {

@@ -35,9 +35,9 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.9.4-R0.1-SNAPSHOT</version>
+      <version>1.8.8-R0.1-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>C:/Users/ketty/Desktop/Minecraft Repo/ServerLocal Emauzium/Faction/server.jar</systemPath>
+      <systemPath>C:/Users/ketty/Desktop/spigot-1.8.8.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
