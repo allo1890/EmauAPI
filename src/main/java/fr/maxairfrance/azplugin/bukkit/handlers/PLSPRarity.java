@@ -1,6 +1,6 @@
 package fr.maxairfrance.azplugin.bukkit.handlers;
 
-public enum PLSPRarity {
+public enum PLSPRarity { // Implement this for AZItemRenderer / AZTabComplete.
     NONE,
     AUTO,
     UNCOMMUN,
@@ -11,4 +11,3 @@ public enum PLSPRarity {
     COSMIC,
     ULTIMATE;
 }
-

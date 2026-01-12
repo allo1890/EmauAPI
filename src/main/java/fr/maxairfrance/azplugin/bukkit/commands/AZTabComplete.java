@@ -96,6 +96,8 @@ public class AZTabComplete implements TabCompleter {
                                 completion.add("EPIC");
                                 completion.add("LEGENDARY");
                                 completion.add("MYTHIC");
+                                completion.add("COSMIC");
+                                completion.add("ULTIMATE");
                             } else {
                                 completion.add("#FF0000");
                                 completion.add("#00FF08");

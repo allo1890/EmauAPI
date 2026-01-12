@@ -25,58 +25,58 @@ public class AZItemRender implements AZCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Player p;
+        Player player;
         if (sender instanceof Player) {
-            p = (Player) sender;
+            player = (Player) sender;
         } else {
             sender.sendMessage("§cErreur: Vous devez être un joueur pour exécuter cette commande !");
             return;
         }
-        if (p.getItemInHand() == null) {
-            p.sendMessage("§cErreur: Vous devez porter un item !");
+        if (player.getItemInHand() == null) {
+            player.sendMessage("§cErreur: Vous devez porter un item !");
             return;
         }
 
         if (args.length >= 3 && args[0].equalsIgnoreCase("itemrender")) {
             try {
-                NBTItem nbti = new NBTItem(p.getItemInHand());
+                NBTItem nbti = new NBTItem(player.getItemInHand());
 
                 if (args[1].equalsIgnoreCase("rarity")) {
                     nbti.mergeCompound(new NBTContainer("{PacRender:{Rarity:\"" + args[2] + "\"},PacDisplay:{Rarity:\"" + args[2] + "\"}}"));
-                    p.sendMessage("§a[§2EmauRarity§a] §fRareté définie sur : " + args[2]);
+                    player.sendMessage("§a[§2EmauRarity§a] §fRareté définie sur : " + args[2]);
                 } else {
                     try {
                         AZColor.get0xAARRGGBB(args[2]);
                     } catch (IllegalArgumentException e) {
-                        p.sendMessage("§cErreur : La couleur Hexadécimale est invalide ! Exemple valide : #FF0000");
+                        player.sendMessage("§cErreur : La couleur Hexadécimale est invalide ! Exemple valide : #FF0000");
                         return;
                     }
 
                     nbti.mergeCompound(new NBTContainer("{PacRender: {Scale: " + Float.parseFloat(args[1]) + ", Color: " + AZColor.get0xAARRGGBB(args[2]) + "}, PacDisplay: {Color: " + AZColor.get0xAARRGGBB(args[2]) + "}}"));
-                    p.sendMessage("§a[§2EmauSizeColor§a] §fTaille et couleur mises à jour !");
+                    player.sendMessage("§a[§2EmauSizeColor§a] §fTaille et couleur mises à jour !");
                 }
 
-                p.getItemInHand().setItemMeta(nbti.getItem().getItemMeta());
+                player.getItemInHand().setItemMeta(nbti.getItem().getItemMeta());
             } catch (NumberFormatException e) {
-                p.sendMessage("§cErreur : La valeur de taille est invalide !");
+                player.sendMessage("§cErreur : La valeur de taille est invalide !");
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("itemrender")) {
             try {
                 if (args[1].equalsIgnoreCase("rarity")) {
-                    p.sendMessage("§cErreur: Veuillez spécifier une rareté !");
+                    player.sendMessage("§cErreur: Veuillez spécifier une rareté !");
                 } else {
-                    NBTItem nbti = new NBTItem(p.getItemInHand());
+                    NBTItem nbti = new NBTItem(player.getItemInHand());
                     nbti.mergeCompound(new NBTContainer("{PacRender: {Scale: " + Float.parseFloat(args[1]) + "}}"));
-                    p.getItemInHand().setItemMeta(nbti.getItem().getItemMeta());
-                    p.sendMessage("§a[§2EmauSize§a] §fTaille de l'item mise à jour !");
+                    player.getItemInHand().setItemMeta(nbti.getItem().getItemMeta());
+                    player.sendMessage("§a[§2EmauSize§a] §fTaille de l'item mise à jour !");
                 }
             } catch (NumberFormatException e) {
-                p.sendMessage("§cErreur : La valeur de taille est invalide !");
+                player.sendMessage("§cErreur : La valeur de taille est invalide !");
             }
         } else {
-            p.sendMessage("§c/az itemrender <taille> [couleur(Hex)]");
-            p.sendMessage("§c/az itemrender rarity <nom_de_rareté>");
-            p.sendMessage("§fVous pouvez utiliser ce site pour faire des couleurs en Hexadécimal §bhttps://htmlcolorcodes.com/fr/");
+            player.sendMessage("§c/az itemrender <taille> [couleur(Hex)]");
+            player.sendMessage("§c/az itemrender rarity <nom_de_rareté>");
+            player.sendMessage("§fVous pouvez utiliser ce site pour faire des couleurs en Hexadécimal §bhttps://htmlcolorcodes.com/fr/");
         }
     }
 }
